@@ -1,6 +1,9 @@
 # Do you want to support the continuation of this and other projects?
 Visit my Patreon page [here](https://patreon.com/danielthedeveloper) and show your support!
 
+<br>
+<br>
+
 # AzerothCore Transmog System 3.3.5a
 
 Transmog system created with AIO and Eluna for AzerothCore.
@@ -15,13 +18,18 @@ Transmog system created with AIO and Eluna for AzerothCore.
 
 For help read the mod-eluna documentation for AzerothCore [here](https://github.com/azerothcore/mod-eluna)
 
+## Know Bugs: Currently under development
+
+- Currently, the real_item id is removed from the database and the transmog is broken by first resetting and then deleting the slot or slots
+- The click area is off-center because the UI button for deletion and reset is not properly centered.
+
 ## WIP
 
 - Spam prevention (click events)
 - Display small info text on items if you have previously obtained the transmog/display id
 - Search with display id
 - Weapon auras
-- Spells/Character Effects
+- Spells/Character effects
 
 <br>
 <br>
