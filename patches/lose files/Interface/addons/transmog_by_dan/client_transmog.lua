@@ -255,7 +255,7 @@ local function InitTabSlots()
 		local itemChild
 		if ( i == 1 ) then
 			itemChild = CreateFrame("Frame", "ItemChild"..i, TransmogFrame, "TransmogItemWrapperTemplate") 
-			itemChild:SetPoint("TOPLEFT", 400, -240)
+			itemChild:SetPoint("TOPLEFT", 480, -240)
 			firstInRowSlot = itemChild
 		else
 			if ( i == 4 ) then
@@ -264,7 +264,7 @@ local function InitTabSlots()
 				firstInRowSlot = itemChild
 			else
 				itemChild = CreateFrame("Button", "ItemChild"..i, lastSlot, "TransmogItemWrapperTemplate")
-				itemChild:SetPoint("RIGHT", 180, 0)
+				itemChild:SetPoint("RIGHT", 230, 0)
 			end
 		end
 		
@@ -503,16 +503,18 @@ function TransmogHandlers.InitTab(player, newSlotItemIds, page, hasMorePages)
 			end
 			child.itemModel:Undress()
 			child.itemModel:TryOn(currentSlotItemIds[i])
+			child.itemModel:SetPoint("CENTER", 0, -15)
 
-			if currentSlot == PLAYER_VISIBLE_ITEM_1_ENTRYID then
-				child.itemModel:SetPoint("CENTER", 0, 0)
-				child.itemModel:SetCamera(0)
-			else
-				child.itemModel:SetPoint("CENTER", 0, -15)
+			-- TODO Camera? currently not usable because of lacking ultrawide support
+			--if currentSlot == PLAYER_VISIBLE_ITEM_1_ENTRYID then
+				--child.itemModel:SetPoint("CENTER", 0, 0)
+				--child.itemModel:SetCamera(0)
+			--else
+				--child.itemModel:SetPoint("CENTER", 0, -15)
 				--child.itemModel:SetCamera(1)
 				--child.itemModel:SetViewTranslation(0.2, 0.2)
 				--child.itemModel:Show()
-			end
+			--end
 		end
 	end
 end

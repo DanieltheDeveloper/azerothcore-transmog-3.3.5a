@@ -195,14 +195,14 @@
 		</Layers>
 	</Button>
 	<Frame name="TransmogFrame" parent="UIParent" toplevel="true" setAllPoints="true" id="6" hidden="true" enableMouse="true" movable="true" frameStrata="DIALOG">
-		<Size x="1000" y="700"/>
+		<Size x="1200" y="700"/>
 		<Anchors>
 			<Anchor point="CENTER" relativeTo="UIParent"/>
 		</Anchors>
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture name="$parentDialogBG" hWrapMode="false" vWrapMode="false" vertTile="false" horizTile="false" file="Interface\AddOns\transmog_by_dan\assets\Transmog-BG">
-					<Size x="1000" y="700"/>
+					<Size x="1200" y="700"/>
 					<TexCoords left="0" right="0.52" top="0" bottom="0.66">
 						<Rect ULx="" ULy="" LLx="" LLy="" URx="" URy="" LRx="" LRy="" />
 					</TexCoords>
@@ -219,12 +219,12 @@
                 </FontString>
 				<FontString name="SearchString" text="Search:" inherits="GameFontNormal">
 					<Anchors>
-						<Anchor point="BOTTOMLEFT" x="56" y="70"/>
+						<Anchor point="BOTTOMLEFT" x="96" y="70"/>
 					</Anchors>
                 </FontString>
 				<FontString name="TransmogPaginationText" text="Page 1" inherits="GameFontNormal">
 					<Anchors>
-						<Anchor point="BOTTOM" x="158" y="55"/>
+						<Anchor point="BOTTOM" x="184" y="55"/>
 					</Anchors>
                 </FontString>
 			</Layer>
@@ -232,17 +232,17 @@
 		<Frames>
 			<Button name="TransmogCloseButton" inherits="UIPanelCloseButton" >
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="-20" y="-70"/>
+					<Anchor point="TOPRIGHT" x="-30" y="-75"/>
 				</Anchors>
 			</Button>
 			<DressUpModel name="TransmogModelFrame">
                 <Size>
-                    <AbsDimension x="190" y="380"/>
+                    <AbsDimension x="202" y="380"/>
                 </Size>
                 <Anchors>
                     <Anchor point="TOPLEFT">
                         <Offset>
-                            <AbsDimension x="90" y="-240"/>
+                            <AbsDimension x="120" y="-240"/>
                         </Offset>
                     </Anchor>
                 </Anchors>
@@ -299,7 +299,7 @@
             </DressUpModel>
 			<Button name="TransmogCharacterHeadSlot" inherits="TransmogItemSlotButtonTemplate">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="TransmogModelFrame" x="-36" y="0"/>
+					<Anchor point="TOPLEFT" relativeTo="TransmogModelFrame" x="-46" y="0"/>
 				</Anchors>
 				<Scripts>
 					<OnClick function="OnClickHeadTab"/>
@@ -355,7 +355,7 @@
             </Button>
 			<Button name="TransmogCharacterHandsSlot" inherits="TransmogItemSlotButtonTemplate">
 				<Anchors>
-					<Anchor point="BOTTOM" relativeTo="TransmogCharacterHeadSlot" x="226" y="0"/>
+					<Anchor point="BOTTOM" relativeTo="TransmogCharacterHeadSlot" x="260" y="0"/>
 				</Anchors>
 				<Scripts>
 					<OnClick function="OnClickHandsTab"/>
@@ -410,12 +410,12 @@
 				</Scripts>
             </Button>
 			<Button name="LeftButton" text="d" inherits="UIMenuButtonStretchTemplate">
-				<Size x="40" y="20"/>
+				<Size x="64" y="64"/>
 				<NormalFont style="Arrows"/>
 				<DisabledFont style="ArrowsDisabled"/>
 				<HighlightFont style="ArrowsHighlight"/>
 				<Anchors>
-					<Anchor point="BOTTOM" x="80" y="50"/>
+					<Anchor point="BOTTOM" x="100" y="30"/>
 				</Anchors>
 				<Scripts>
 					<OnLoad>self:Disable()</OnLoad>
@@ -423,12 +423,12 @@
 				</Scripts>
 			</Button>
 			<Button name="RightButton" text="F" inherits="UIMenuButtonStretchTemplate">
-				<Size x="40" y="20"/>
+				<Size x="64" y="64"/>
 				<NormalFont style="Arrows"/>
 				<DisabledFont style="ArrowsDisabled"/>
 				<HighlightFont style="ArrowsHighlight"/>
 				<Anchors>
-					<Anchor point="BOTTOM" x="230" y="50"/>
+					<Anchor point="BOTTOM" x="270" y="30"/>
 				</Anchors>
 				<Scripts>
 					<OnLoad>self:Disable()</OnLoad>
