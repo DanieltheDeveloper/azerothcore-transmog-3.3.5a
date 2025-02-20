@@ -451,6 +451,31 @@ function TransmogHandlers.LoadTransmogsAfterSave(player)
 	LoadTransmogsFromCurrentIds()
 end
 
+-- language support
+
+local langIdTable = {
+    ["enUS"] = 0,
+    ["deDE"] = 3,
+}
+
+-- fallback = enUS
+local ClientLocaleId = 0
+
+local function HandleLocale()
+    local langId = langIdTable[GetLocale()]
+    -- get locale id from langIdtable
+
+    if not langId then
+        langId = ClientLocaleId
+    end
+
+    return langId
+end
+
+function TransmogHandlers.GetLocale(player, item, count)
+    AIO.Handle("Transmog", "LootItemLocale", item, count, HandleLocale())
+end
+
 function OnClickApplyAllowTransmogs(btn)
 	PlaySound("GAMEGENERICBUTTONPRESS", "master")
     for slotName, entryId in pairs(SLOT_IDS) do
