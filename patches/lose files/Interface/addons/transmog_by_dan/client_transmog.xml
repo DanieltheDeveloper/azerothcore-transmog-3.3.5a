@@ -265,12 +265,20 @@
 							</Anchor>
 						</Anchors>
 						<Scripts>
-							<OnLoad>
-								self:RegisterForClicks("LeftButtonDown", "LeftButtonUp");
-							</OnLoad>
-							<OnClick>
-								Model_RotateLeft(TransmogModelFrame);
-							</OnClick>
+							<OnMouseDown>
+								self.isRotating = true;
+								self:SetScript("OnUpdate", function()
+									Model_RotateRight(TransmogModelFrame);
+								end);
+							</OnMouseDown>
+							<OnMouseUp>
+								self.isRotating = false;
+								self:SetScript("OnUpdate", nil);
+							</OnMouseUp>
+							<OnHide>
+								self.isRotating = false;
+								self:SetScript("OnUpdate", nil);
+							</OnHide>
 						</Scripts>
 						<NormalTexture file="Interface\Buttons\UI-RotationLeft-Button-Up"/>
 						<PushedTexture file="Interface\Buttons\UI-RotationLeft-Button-Down"/>
@@ -284,12 +292,20 @@
 							<Anchor point="TOPLEFT" relativeTo="TransmogModelFrameRotateLeftButton" relativePoint="TOPRIGHT"/>
 						</Anchors>
 						<Scripts>
-							<OnLoad>
-								self:RegisterForClicks("LeftButtonDown", "LeftButtonUp");
-							</OnLoad>
-							<OnClick>
-								Model_RotateRight(TransmogModelFrame);
-							</OnClick>
+							<OnMouseDown>
+								self.isRotating = true;
+								self:SetScript("OnUpdate", function()
+									Model_RotateLeft(TransmogModelFrame);
+								end);
+							</OnMouseDown>
+							<OnMouseUp>
+								self.isRotating = false;
+								self:SetScript("OnUpdate", nil);
+							</OnMouseUp>
+							<OnHide>
+								self.isRotating = false;
+								self:SetScript("OnUpdate", nil);
+							</OnHide>
 						</Scripts>
 						<NormalTexture file="Interface\Buttons\UI-RotationRight-Button-Up"/>
 						<PushedTexture file="Interface\Buttons\UI-RotationRight-Button-Down"/>
