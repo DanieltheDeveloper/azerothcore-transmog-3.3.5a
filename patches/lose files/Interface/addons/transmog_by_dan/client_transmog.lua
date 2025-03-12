@@ -212,7 +212,7 @@ local function OnClickItemTransmogButton(btn, buttonType)
     --SetItemButtonTexture(_G["Character" .. slotName .. "Slot"], textureName)
 end
 
-function OnClickResetAllButton(btn)
+function OnClickHideAllButton(btn)
 	PlaySound("GAMEGENERICBUTTONPRESS", "master")
     for slotName, _ in pairs(SLOT_IDS) do
         currentTransmogIds[slotName] = 0
@@ -222,7 +222,7 @@ function OnClickResetAllButton(btn)
     UpdateAllSlotTextures()
 end
 
-function OnClickDeleteAllButton(btn)
+function OnClickRestoreAllButton(btn)
 	PlaySound("GAMEGENERICBUTTONPRESS", "master")
     for slotName, slotId in pairs(SLOT_IDS) do
         currentTransmogIds[slotName] = nil
@@ -425,7 +425,7 @@ function TransmogItemSlotButton_Update(self)
 	PaperDollItemSlotButton_UpdateLock(self);
 end
 
-function OnClickResetCurrentTransmogSlot(btn)
+function OnClickHideCurrentTransmogSlot(btn)
 	PlaySound("GAMEGENERICBUTTONPRESS", "master")
     local slotName = TRANSMOG_SLOT_MAPPING[currentSlot]
     currentTransmogIds[slotName] = 0
@@ -436,8 +436,8 @@ function OnClickResetCurrentTransmogSlot(btn)
     LoadTransmogsFromCurrentIds()
 end
 
--- Why delete only working without the transmog 0 applied? Why transmog 0?!
-function OnClickDeleteCurrentTransmogSlot(btn)
+-- Why restore only working without the transmog 0 applied? Why transmog 0?!
+function OnClickRestoreCurrentTransmogSlot(btn)
 	PlaySound("GAMEGENERICBUTTONPRESS", "master")
     local slotName = TRANSMOG_SLOT_MAPPING[currentSlot]
     currentTransmogIds[slotName] = nil
@@ -559,12 +559,12 @@ function SetTab()
 	TransmogPaginationText:SetText("Page 1")
 	for slot, value in pairs(SLOT_IDS) do
 		_G["TransmogCharacter"..slot.."Slot"].toastTexture:SetTexture("Interface\\AddOns\\transmog_by_dan\\assets\\Transmog-Overlay-Toast")
-		_G["TransmogCharacter"..slot.."Slot"].resetButton:Hide()
-		_G["TransmogCharacter"..slot.."Slot"].deleteButton:Hide()
+		_G["TransmogCharacter"..slot.."Slot"].restoreButton:Hide()
+		_G["TransmogCharacter"..slot.."Slot"].hideButton:Hide()
 	end
 	_G["TransmogCharacter"..TRANSMOG_SLOT_MAPPING[currentSlot].."Slot"].toastTexture:SetTexture("Interface\\AddOns\\transmog_by_dan\\assets\\Transmog-Overlay-Selected")
-	_G["TransmogCharacter"..TRANSMOG_SLOT_MAPPING[currentSlot].."Slot"].resetButton:Show()
-	_G["TransmogCharacter"..TRANSMOG_SLOT_MAPPING[currentSlot].."Slot"].deleteButton:Show()
+	_G["TransmogCharacter"..TRANSMOG_SLOT_MAPPING[currentSlot].."Slot"].restoreButton:Show()
+	_G["TransmogCharacter"..TRANSMOG_SLOT_MAPPING[currentSlot].."Slot"].hideButton:Show()
 	AIO.Handle("Transmog", "SetCurrentSlotItemIds", currentSlot, currentPage)
 end
 
@@ -595,7 +595,7 @@ function TransmogHandlers.SetTransmogItemIdClient(player, slot, id, realItemId)
         end
     end
 
-    -- Reset all slot textures
+    -- Restore all slot textures
     UpdateAllSlotTextures()
 end
 
