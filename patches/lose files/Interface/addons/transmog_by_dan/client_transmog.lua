@@ -717,14 +717,6 @@ function OnTransmogFrameLoad(self)
 	
 	InitTabSlots()
 	
-	local leftFontString = LeftButton:GetFontString()
-	leftFontString:SetShadowOffset(1, -1)
-	leftFontString:SetPoint("CENTER", 0, 2)
-	
-	local rightFontString = RightButton:GetFontString()
-	rightFontString:SetShadowOffset(1, -1)
-	rightFontString:SetPoint("CENTER", 0, 2)
-	
 	characterTransmogTab = CreateFrame("CheckButton", "CharacterFrameTab6", CharacterFrame, "SpellBookSkillLineTabTemplate")
 	characterTransmogTab:SetSize(32, 32);
 	characterTransmogTab:SetPoint("TOPRIGHT", CharacterFrame, "TOPRIGHT", 0, -48)
