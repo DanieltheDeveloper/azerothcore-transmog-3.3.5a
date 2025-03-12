@@ -1,13 +1,13 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
 	<Script file="client_transmog.lua"/>
-	<Button name="TransmogCharacterSlotResetButtonTemplate" virtual="true">
+	<Button name="TransmogCharacterSlotRestoreButtonTemplate" virtual="true">
 		<Size x="30" y="30"/>
 		<Anchors>
 			<Anchor point="RIGHT" x="24" y="8"/>
 		</Anchors>
 		<Layers>
 			<Layer level="OVERLAY">
-				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Delete">
+				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Restore">
 					<Size x="20" y="20"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
@@ -15,7 +15,7 @@
 				</Texture>
 			</Layer>
 			<Layer level="HIGHLIGHT">
-				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Delete">
+				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Restore">
 					<Size x="20" y="20"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
@@ -25,41 +25,35 @@
 			</Layer>
 		</Layers>
 		<Scripts>
-			<OnClick function="OnClickResetCurrentTransmogSlot"/>
+			<OnClick function="OnClickRestoreCurrentTransmogSlot"/>
 		</Scripts>
 	</Button>
-	<Button name="TransmogCharacterSlotDeleteButtonTemplate" virtual="true">
+	<Button name="TransmogCharacterSlotHideButtonTemplate" virtual="true">
 		<Size x="30" y="30"/>
 		<Anchors>
 			<Anchor point="RIGHT" x="25" y="-8"/>
 		</Anchors>
 		<Layers>
 			<Layer level="OVERLAY">
-				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Textures">
-					<Size x="30" y="30"/>
+				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Hide">
+					<Size x="20" y="20"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
 					</Anchors>
-					<TexCoords left="0.26" right="0.60" top="0.50" bottom="0.58">
-						<Rect ULx="" ULy="" LLx="" LLy="" URx="" URy="" LRx="" LRy="" />
-					</TexCoords>
 				</Texture>
 			</Layer>
 			<Layer level="HIGHLIGHT">
-				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Textures">
-					<Size x="30" y="30"/>
+				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Hide">
+					<Size x="20" y="20"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
 					</Anchors>
-					<TexCoords left="0.26" right="0.60" top="0.50" bottom="0.58">
-						<Rect ULx="" ULy="" LLx="" LLy="" URx="" URy="" LRx="" LRy="" />
-					</TexCoords>
 					<Color r="0" g="1" b="1" a="1.0"/>
 				</Texture>
 			</Layer>
 		</Layers>
 		<Scripts>
-			<OnClick function="OnClickDeleteCurrentTransmogSlot"/>
+			<OnClick function="OnClickHideCurrentTransmogSlot"/>
 		</Scripts>
 	</Button>
 	<Button name="TransmogItemSlotButtonTemplate" inherits="ItemButtonTemplate" virtual="true">
@@ -80,8 +74,8 @@
 			</Layer>
 		</Layers>
 		<Frames>
-			<Button parentKey="resetButton" inherits="TransmogCharacterSlotResetButtonTemplate"/>
-			<Button parentKey="deleteButton" inherits="TransmogCharacterSlotDeleteButtonTemplate"/>
+			<Button parentKey="restoreButton" inherits="TransmogCharacterSlotResetButtonTemplate"/>
+			<Button parentKey="hideButton" inherits="TransmogCharacterSlotDeleteButtonTemplate"/>
 		</Frames>
         <Scripts>
             <OnLoad>
@@ -129,11 +123,11 @@
 			<BorderColor r="0.64" g="0.50" b="0.41" a="1" />
 		</Backdrop>
 	</Frame>
-	<Button name="ResetButtonTemplate" virtual="true">
+	<Button name="RestoreButtonTemplate" virtual="true">
 		<Size x="40" y="40"/>
 		<Layers>
 			<Layer level="OVERLAY">
-				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Delete">
+				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Restore">
 					<Size x="28" y="28"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
@@ -141,7 +135,7 @@
 				</Texture>
 			</Layer>
 			<Layer level="HIGHLIGHT">
-				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Delete">
+				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Restore">
 					<Size x="28" y="28"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
@@ -151,29 +145,23 @@
 			</Layer>
 		</Layers>
 	</Button>
-	<Button name="DeleteButtonTemplate" virtual="true">
+	<Button name="HideButtonTemplate" virtual="true">
 		<Size x="40" y="40"/>
 		<Layers>
 			<Layer level="OVERLAY">
-				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Textures">
+				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Hide">
 					<Size x="40" y="40"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
 					</Anchors>
-					<TexCoords left="0.26" right="0.60" top="0.50" bottom="0.58">
-						<Rect ULx="" ULy="" LLx="" LLy="" URx="" URy="" LRx="" LRy="" />
-					</TexCoords>
 				</Texture>
 			</Layer>
 			<Layer level="HIGHLIGHT">
-				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Textures">
+				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Hide">
 					<Size x="40" y="40"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
 					</Anchors>
-					<TexCoords left="0.26" right="0.60" top="0.50" bottom="0.58">
-						<Rect ULx="" ULy="" LLx="" LLy="" URx="" URy="" LRx="" LRy="" />
-					</TexCoords>
 					<Color r="0" g="1" b="1" a="1.0"/>
 				</Texture>
 			</Layer>
@@ -186,7 +174,7 @@
 		</Anchors>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture name="$parentDialogBG" hWrapMode="false" vWrapMode="false" vertTile="false" horizTile="false" file="Interface\AddOns\transmog_by_dan\assets\Transmog-BG">
+				<Texture name="$parentDialogBG" hWrapMode="false" vWrapMode="false" vertTile="false" horizTile="false" file="Interface\AddOns\transmog_by_dan\assets\Transmog-Frame">
 					<Size x="1200" y="700"/>
 					<TexCoords left="0" right="0.52" top="0" bottom="0.66">
 						<Rect ULx="" ULy="" LLx="" LLy="" URx="" URy="" LRx="" LRy="" />
@@ -468,22 +456,22 @@
 					<OnClick function="OnClickApplyAllowTransmogs"/>
 				</Scripts>
 			</Button>
-			<Button name="ResetAllButton" inherits="ResetButtonTemplate">
+			<Button name="RestoreAllButton" inherits="ResetButtonTemplate">
 				<Size x="40" y="40"/>
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="TransmogCharacterWristSlot" x="90" y="0"/>
 				</Anchors>
 				<Scripts>
-					<OnClick function="OnClickResetAllButton"/>
+					<OnClick function="OnClickRestoreAllButton"/>
 				</Scripts>
 			</Button>
-			<Button name="DeleteAllButton" inherits="DeleteButtonTemplate">
+			<Button name="HideAllButton" inherits="DeleteButtonTemplate">
 				<Size x="40" y="40"/>
 				<Anchors>
 					<Anchor point="RIGHT" relativeTo="TransmogCharacterRangedSlot" x="-90" y="2"/>
 				</Anchors>
 				<Scripts>
-					<OnClick function="OnClickDeleteAllButton"/>
+					<OnClick function="OnClickHideAllButton"/>
 				</Scripts>
 			</Button>
 			<EditBox name="ItemSearchInput" autoFocus="false" toplevel="true" enableMouse="true" letters="255" inherits="InputBoxTemplate">
