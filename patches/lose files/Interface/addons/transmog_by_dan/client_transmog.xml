@@ -1,20 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
 	<Script file="client_transmog.lua"/>
-	<Font name="Arrows" font="Interface\AddOns\transmog_by_dan\assets\Arrows.ttf" inherits="GameFontNormal">
-		<FontHeight>
-			<AbsValue val="12"/>
-		</FontHeight>
-	</Font>
-	<Font name="ArrowsDisabled" font="Interface\AddOns\transmog_by_dan\assets\Arrows.ttf" inherits="GameFontDisable">
-		<FontHeight>
-			<AbsValue val="12"/>
-		</FontHeight>
-	</Font>
-	<Font name="ArrowsHighlight" font="Interface\AddOns\transmog_by_dan\assets\Arrows.ttf" inherits="GameFontHighlight">
-		<FontHeight>
-			<AbsValue val="12"/>
-		</FontHeight>
-	</Font>
 	<Button name="TransmogCharacterSlotResetButtonTemplate" virtual="true">
 		<Size x="30" y="30"/>
 		<Anchors>
@@ -224,7 +209,7 @@
                 </FontString>
 				<FontString name="TransmogPaginationText" text="Page 1" inherits="GameFontNormal">
 					<Anchors>
-						<Anchor point="BOTTOM" x="184" y="55"/>
+						<Anchor point="BOTTOM" x="186" y="55"/>
 					</Anchors>
                 </FontString>
 			</Layer>
@@ -425,31 +410,37 @@
 					<OnClick function="OnClickRangedTab"/>
 				</Scripts>
             </Button>
-			<Button name="LeftButton" text="d" inherits="UIMenuButtonStretchTemplate">
-				<Size x="64" y="64"/>
-				<NormalFont style="Arrows"/>
-				<DisabledFont style="ArrowsDisabled"/>
-				<HighlightFont style="ArrowsHighlight"/>
+			<Button name="LeftButton">
+				<Size>
+					<AbsDimension x="32" y="32"/>
+				</Size>
 				<Anchors>
-					<Anchor point="BOTTOM" x="100" y="30"/>
+					<Anchor point="BOTTOM" x="135" y="45"/>
 				</Anchors>
 				<Scripts>
 					<OnLoad>self:Disable()</OnLoad>
 					<OnClick function="OnClickPrevPage"/>
 				</Scripts>
+				<NormalTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Down"/>
+				<DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Disabled"/>
+				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
 			</Button>
-			<Button name="RightButton" text="F" inherits="UIMenuButtonStretchTemplate">
-				<Size x="64" y="64"/>
-				<NormalFont style="Arrows"/>
-				<DisabledFont style="ArrowsDisabled"/>
-				<HighlightFont style="ArrowsHighlight"/>
+			<Button name="RightButton">
+				<Size>
+					<AbsDimension x="32" y="32"/>
+				</Size>
 				<Anchors>
-					<Anchor point="BOTTOM" x="270" y="30"/>
+					<Anchor point="BOTTOM" x="236" y="45"/>
 				</Anchors>
 				<Scripts>
 					<OnLoad>self:Disable()</OnLoad>
 					<OnClick function="OnClickNextPage"/>
 				</Scripts>
+				<NormalTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Down"/>
+				<DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Disabled"/>
+				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
 			</Button>
 			<Button name="SaveButton" text="Save" inherits="ItemButtonTemplate">
 				<Anchors>
