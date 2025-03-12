@@ -74,8 +74,8 @@
 			</Layer>
 		</Layers>
 		<Frames>
-			<Button parentKey="restoreButton" inherits="TransmogCharacterSlotResetButtonTemplate"/>
-			<Button parentKey="hideButton" inherits="TransmogCharacterSlotDeleteButtonTemplate"/>
+			<Button parentKey="restoreButton" inherits="TransmogCharacterSlotRestoreButtonTemplate"/>
+			<Button parentKey="hideButton" inherits="TransmogCharacterSlotHideButtonTemplate"/>
 		</Frames>
         <Scripts>
             <OnLoad>
@@ -456,7 +456,7 @@
 					<OnClick function="OnClickApplyAllowTransmogs"/>
 				</Scripts>
 			</Button>
-			<Button name="RestoreAllButton" inherits="ResetButtonTemplate">
+			<Button name="RestoreAllButton" inherits="RestoreButtonTemplate">
 				<Size x="40" y="40"/>
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="TransmogCharacterWristSlot" x="90" y="0"/>
@@ -465,7 +465,7 @@
 					<OnClick function="OnClickRestoreAllButton"/>
 				</Scripts>
 			</Button>
-			<Button name="HideAllButton" inherits="DeleteButtonTemplate">
+			<Button name="HideAllButton" inherits="HideButtonTemplate">
 				<Size x="40" y="40"/>
 				<Anchors>
 					<Anchor point="RIGHT" relativeTo="TransmogCharacterRangedSlot" x="-90" y="2"/>
