@@ -243,8 +243,7 @@ local function OnEnterItemToolTip(btn)
 	GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
 	GameTooltip:SetHyperlink("item:"..itemId..":0:0:0:0:0:0:0")
 	GameTooltip:AddLine(" ")
-	GameTooltip:AddLine("Transmog unlocked from this item", 0, 0, 1)
-	GameTooltip:AddLine("Click to preview item", 1, 0, 0)
+	GameTooltip:AddLine("Click to preview this item.", 0, 1, 0)
 	GameTooltip:Show()
 end
 
@@ -484,7 +483,7 @@ end
 
 local function TransmogTabTooltip(btn)
 	GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
-	GameTooltip:AddLine("Transmog")
+	GameTooltip:AddLine("Transmogrify")
 	GameTooltip:Show()
 end
 
