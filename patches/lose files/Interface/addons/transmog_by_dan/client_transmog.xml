@@ -212,12 +212,12 @@
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
-				<FontString name="Title" text="Transmog System" parentKey="TitleText" inherits="GameFontNormalLarge">
+				<FontString name="Title" text="Transmogrify" parentKey="TitleText" inherits="GameFontNormalLarge">
 					<Anchors>
 						<Anchor point="CENTER" x="" y="200"/>
 					</Anchors>
                 </FontString>
-				<FontString name="SearchString" text="Search:" inherits="GameFontNormal">
+				<FontString name="SearchString" text="Filter:" inherits="GameFontNormal">
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" x="96" y="70"/>
 					</Anchors>
