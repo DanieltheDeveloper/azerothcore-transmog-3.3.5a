@@ -1,14 +1,14 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
 	<Script file="client_transmog.lua"/>
 	<Button name="TransmogCharacterSlotRestoreButtonTemplate" virtual="true">
-		<Size x="30" y="30"/>
+		<Size x="16" y="16"/>
 		<Anchors>
-			<Anchor point="RIGHT" x="24" y="8"/>
+			<Anchor point="RIGHT" x="16" y="10"/>
 		</Anchors>
 		<Layers>
 			<Layer level="OVERLAY">
 				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Restore">
-					<Size x="20" y="20"/>
+					<Size x="22" y="22"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
 					</Anchors>
@@ -16,7 +16,7 @@
 			</Layer>
 			<Layer level="HIGHLIGHT">
 				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Restore">
-					<Size x="20" y="20"/>
+					<Size x="22" y="22"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
 					</Anchors>
@@ -29,14 +29,14 @@
 		</Scripts>
 	</Button>
 	<Button name="TransmogCharacterSlotHideButtonTemplate" virtual="true">
-		<Size x="30" y="30"/>
+		<Size x="16" y="16"/>
 		<Anchors>
-			<Anchor point="RIGHT" x="25" y="-8"/>
+			<Anchor point="RIGHT" x="16" y="-10"/>
 		</Anchors>
 		<Layers>
 			<Layer level="OVERLAY">
 				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Hide">
-					<Size x="20" y="20"/>
+					<Size x="22" y="22"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
 					</Anchors>
@@ -44,11 +44,11 @@
 			</Layer>
 			<Layer level="HIGHLIGHT">
 				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Hide">
-					<Size x="20" y="20"/>
+					<Size x="19" y="19"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
 					</Anchors>
-					<Color r="0" g="1" b="1" a="1.0"/>
+					<Color r="1" g="1" b="1" a="1.0"/>
 				</Texture>
 			</Layer>
 		</Layers>
@@ -150,7 +150,7 @@
 		<Layers>
 			<Layer level="OVERLAY">
 				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Hide">
-					<Size x="40" y="40"/>
+					<Size x="28" y="28"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
 					</Anchors>
@@ -158,7 +158,7 @@
 			</Layer>
 			<Layer level="HIGHLIGHT">
 				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Hide">
-					<Size x="40" y="40"/>
+					<Size x="28" y="28"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
 					</Anchors>
@@ -185,11 +185,17 @@
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
-				<FontString name="Title" text="Transmogrify" parentKey="TitleText" inherits="GameFontNormalLarge">
+				<FontString name="Title" text="Transmogrify" parentKey="TitleText" inherits="GameFontNormalHuge">
 					<Anchors>
-						<Anchor point="CENTER" x="" y="200"/>
+						<Anchor point="CENTER" x="" y="207"/>
 					</Anchors>
                 </FontString>
+				<FontString name="Subtitle" text="Collected Item Appearances" parentKey="SubtitleText" inherits="GameFontNormal">
+					<Anchors>
+						<Anchor point="CENTER" x="" y="187"/>
+					</Anchors>
+					<Color r="0.7" g="0.7" b="0.7"/>
+				</FontString>
 				<FontString name="SearchString" text="Filter:" inherits="GameFontNormal">
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" x="96" y="70"/>
@@ -457,7 +463,7 @@
 				</Scripts>
 			</Button>
 			<Button name="RestoreAllButton" inherits="RestoreButtonTemplate">
-				<Size x="40" y="40"/>
+				<Size x="22" y="22"/>
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="TransmogCharacterWristSlot" x="90" y="0"/>
 				</Anchors>
@@ -466,7 +472,7 @@
 				</Scripts>
 			</Button>
 			<Button name="HideAllButton" inherits="HideButtonTemplate">
-				<Size x="40" y="40"/>
+				<Size x="24" y="24"/>
 				<Anchors>
 					<Anchor point="RIGHT" relativeTo="TransmogCharacterRangedSlot" x="-90" y="2"/>
 				</Anchors>
@@ -475,7 +481,7 @@
 				</Scripts>
 			</Button>
 			<EditBox name="ItemSearchInput" autoFocus="false" toplevel="true" enableMouse="true" letters="255" inherits="InputBoxTemplate">
-				<Size x="200" y="80"/>
+				<Size x="200" y="20"/>
 				<Anchors>
 					<Anchor point="RIGHT" relativeTo="SearchString" x="210" y="0"/>
 				</Anchors>
