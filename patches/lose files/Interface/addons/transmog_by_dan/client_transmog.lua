@@ -550,7 +550,7 @@ function SetSearchTab()
 end
 
 function SetTab()
-	if ( ItemSearchInput:GetText() ~= "" and ItemSearchInput:GetText() ~= "|cff808080Click here and start typing...|r") then
+	if ( ItemSearchInput:GetText() ~= "" and ItemSearchInput:GetText() ~= "|cff808080Filter Item Appearance|r") then
 		SetSearchTab()
 		return;
 	end
@@ -711,8 +711,41 @@ function TransmogItemSlotButton_OnLoad(self)
 	--itemSlotButtons[id] = self;
 end
 
+function InitializeCloakHelmCheckboxes()
+    ShowCloakCheckBox:SetChecked(ShowingCloak())
+    ShowCloakCheckBox:SetScript("OnClick", function(self)
+        local value = self:GetChecked() and "1" or "0"
+        if value == "1" then
+            PlaySound("igMainMenuOptionCheckBoxOn", "master")
+        else
+            PlaySound("igMainMenuOptionCheckBoxOff", "master")
+        end
+        ShowCloak(value == "1")
+    end)
+    
+    ShowHelmCheckBox:SetChecked(ShowingHelm())
+    ShowHelmCheckBox:SetScript("OnClick", function(self)
+        local value = self:GetChecked() and "1" or "0"
+        if value == "1" then
+            PlaySound("igMainMenuOptionCheckBoxOn", "master")
+        else
+            PlaySound("igMainMenuOptionCheckBoxOff", "master")
+        end
+        ShowHelm(value == "1")
+    end)
+    
+    local frame = CreateFrame("Frame")
+    frame:RegisterEvent("PLAYER_FLAGS_CHANGED")
+    frame:SetScript("OnEvent", function(self, event, unit)
+        if unit == "player" then
+            ShowCloakCheckBox:SetChecked(ShowingCloak())
+            ShowHelmCheckBox:SetChecked(ShowingHelm())
+        end
+    end)
+end
+
 function OnTransmogFrameLoad(self)
-	ItemSearchInput:SetText("|cff808080Click here and start typing...|r")
+	ItemSearchInput:SetText("|cff808080Filter Item Appearance|r")
 	ItemSearchInput:SetScript("OnEnterPressed", SetSearchTab)
 	
 	InitTabSlots()
@@ -731,7 +764,7 @@ function OnTransmogFrameLoad(self)
 	TransmogCloseButton:SetScript("OnClick", function(self) if ( TransmogFrame:IsShown() ) then TransmogFrame:Hide() return; end TransmogFrame:Show() end)
 
 	PaperDollFrame:SetScript("OnShow", PaperDollFrame_OnShow)
-
+	InitializeCloakHelmCheckboxes()
 	
 	-- This enables saving of the position of the frame over reload of the UI or restarting game
 	AIO.SavePosition(TransmogFrame)
@@ -759,8 +792,10 @@ function OnClickTransmogButton(self)
 	characterTransmogTab:SetChecked(true)
 	isInputHovered = false
 	AIO.Handle("Transmog", "SetCurrentSlotItemIds", currentSlot, 1)
-	ItemSearchInput:SetText("|cff808080Click here and start typing...|r")
+	ItemSearchInput:SetText("|cff808080Filter Item Appearance|r")
 	LoadTransmogsFromCurrentIds()
+	ShowCloakCheckBox:SetChecked(ShowingCloak())
+	ShowHelmCheckBox:SetChecked(ShowingHelm())
 end
 
 function OnHideTransmogFrame(self)
