@@ -3,12 +3,12 @@
 	<Button name="TransmogCharacterSlotRestoreButtonTemplate" virtual="true">
 		<Size x="16" y="16"/>
 		<Anchors>
-			<Anchor point="RIGHT" x="16" y="10"/>
+			<Anchor point="LEFT" x="37" y="9"/>
 		</Anchors>
 		<Layers>
 			<Layer level="OVERLAY">
 				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Restore">
-					<Size x="22" y="22"/>
+					<Size x="23" y="23"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
 					</Anchors>
@@ -16,11 +16,11 @@
 			</Layer>
 			<Layer level="HIGHLIGHT">
 				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Restore">
-					<Size x="22" y="22"/>
+					<Size x="23" y="23"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
 					</Anchors>
-					<Color r="0" g="1.0" b="0" a="1.0"/>
+					<Color r="0" g="1" b="0" a="1"/>
 				</Texture>
 			</Layer>
 		</Layers>
@@ -31,12 +31,12 @@
 	<Button name="TransmogCharacterSlotHideButtonTemplate" virtual="true">
 		<Size x="16" y="16"/>
 		<Anchors>
-			<Anchor point="RIGHT" x="16" y="-10"/>
+			<Anchor point="LEFT" x="37" y="-9"/>
 		</Anchors>
 		<Layers>
 			<Layer level="OVERLAY">
 				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Hide">
-					<Size x="22" y="22"/>
+					<Size x="21" y="21"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
 					</Anchors>
@@ -44,11 +44,11 @@
 			</Layer>
 			<Layer level="HIGHLIGHT">
 				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Hide">
-					<Size x="19" y="19"/>
+					<Size x="18" y="18"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
 					</Anchors>
-					<Color r="1" g="1" b="1" a="1.0"/>
+					<Color r="1" g="1" b="1" a="1"/>
 				</Texture>
 			</Layer>
 		</Layers>
@@ -66,7 +66,7 @@
 					</Anchors>
 				</Texture>
 				<Texture parentKey="toastTexture" file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Toast">
-					<Size x="70" y="70"/>
+					<Size x="64" y="64"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
 					</Anchors>
@@ -128,7 +128,7 @@
 		<Layers>
 			<Layer level="OVERLAY">
 				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Restore">
-					<Size x="28" y="28"/>
+					<Size x="32" y="32"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
 					</Anchors>
@@ -136,11 +136,11 @@
 			</Layer>
 			<Layer level="HIGHLIGHT">
 				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Restore">
-					<Size x="28" y="28"/>
+					<Size x="32" y="32"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
 					</Anchors>
-					<Color r="0" g="1.0" b="0" a="1.0"/>
+					<Color r="0" g="1" b="0" a="1"/>
 				</Texture>
 			</Layer>
 		</Layers>
@@ -150,7 +150,7 @@
 		<Layers>
 			<Layer level="OVERLAY">
 				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Hide">
-					<Size x="28" y="28"/>
+					<Size x="30" y="30"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
 					</Anchors>
@@ -158,11 +158,11 @@
 			</Layer>
 			<Layer level="HIGHLIGHT">
 				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Hide">
-					<Size x="28" y="28"/>
+					<Size x="25" y="25"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
 					</Anchors>
-					<Color r="0" g="1" b="1" a="1.0"/>
+					<Color r="1" g="1" b="1" a="1"/>
 				</Texture>
 			</Layer>
 		</Layers>
@@ -187,20 +187,25 @@
 			<Layer level="OVERLAY">
 				<FontString name="Title" text="Transmogrify" parentKey="TitleText" inherits="GameFontNormalHuge">
 					<Anchors>
-						<Anchor point="CENTER" x="" y="207"/>
+						<Anchor point="CENTER" x="0" y="207"/>
 					</Anchors>
                 </FontString>
 				<FontString name="Subtitle" text="Collected Item Appearances" parentKey="SubtitleText" inherits="GameFontNormal">
 					<Anchors>
-						<Anchor point="CENTER" x="" y="187"/>
+						<Anchor point="CENTER" x="0" y="187"/>
 					</Anchors>
 					<Color r="0.7" g="0.7" b="0.7"/>
 				</FontString>
-				<FontString name="SearchString" text="Filter:" inherits="GameFontNormal">
+				<FontString name="ShowCloakText" text="Show Cloak" inherits="GameFontNormal">
 					<Anchors>
-						<Anchor point="BOTTOMLEFT" x="96" y="70"/>
+						<Anchor point="BOTTOMLEFT" x="145" y="60"/>
 					</Anchors>
-                </FontString>
+				</FontString>
+				<FontString name="ShowHelmText" text="Show Helm" inherits="GameFontNormal">
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" x="254" y="60"/>
+					</Anchors>
+				</FontString>
 				<FontString name="TransmogPaginationText" text="Page 1" inherits="GameFontNormal">
 					<Anchors>
 						<Anchor point="BOTTOM" x="186" y="55"/>
@@ -211,7 +216,7 @@
 		<Frames>
 			<Button name="TransmogCloseButton" inherits="UIPanelCloseButton" >
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="-30" y="-75"/>
+					<Anchor point="TOPRIGHT" x="-42" y="-84"/>
 				</Anchors>
 			</Button>
 			<DressUpModel name="TransmogModelFrame">
@@ -239,7 +244,7 @@
 						<Anchors>
 							<Anchor point="TOPLEFT">
 								<Offset>
-                            		<AbsDimension x="64" y="25"/>
+                            		<AbsDimension x="68" y="11"/>
                         		</Offset>
 							</Anchor>
 						</Anchors>
@@ -465,7 +470,7 @@
 			<Button name="RestoreAllButton" inherits="RestoreButtonTemplate">
 				<Size x="22" y="22"/>
 				<Anchors>
-					<Anchor point="LEFT" relativeTo="TransmogCharacterWristSlot" x="90" y="0"/>
+					<Anchor point="LEFT" relativeTo="TransmogCharacterWristSlot" x="84" y="-12"/>
 				</Anchors>
 				<Scripts>
 					<OnClick function="OnClickRestoreAllButton"/>
@@ -474,16 +479,16 @@
 			<Button name="HideAllButton" inherits="HideButtonTemplate">
 				<Size x="24" y="24"/>
 				<Anchors>
-					<Anchor point="RIGHT" relativeTo="TransmogCharacterRangedSlot" x="-90" y="2"/>
+					<Anchor point="RIGHT" relativeTo="TransmogCharacterRangedSlot" x="-82" y="-12"/>
 				</Anchors>
 				<Scripts>
 					<OnClick function="OnClickHideAllButton"/>
 				</Scripts>
 			</Button>
 			<EditBox name="ItemSearchInput" autoFocus="false" toplevel="true" enableMouse="true" letters="255" inherits="InputBoxTemplate">
-				<Size x="200" y="20"/>
+				<Size x="255" y="20"/>
 				<Anchors>
-					<Anchor point="RIGHT" relativeTo="SearchString" x="210" y="0"/>
+					<Anchor point="CENTER" x="187" y="122"/>
 				</Anchors>
 				<Scripts>
 					<OnEscapePressed>self:ClearFocus();</OnEscapePressed>
@@ -492,6 +497,18 @@
 					<OnMouseUp function="SetSearchInputFocus"/>
 				</Scripts>
 			</EditBox>
+			<CheckButton name="ShowCloakCheckBox" inherits="UICheckButtonTemplate">
+				<Size x="24" y="24"/>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="ShowCloakText" x="-24" y="0"/>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="ShowHelmCheckBox" inherits="UICheckButtonTemplate">
+				<Size x="24" y="24"/>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="ShowHelmText" x="-24" y="0"/>
+				</Anchors>
+			</CheckButton>
 		</Frames>
 		<Scripts>
 			<OnLoad function="OnTransmogFrameLoad"/>
