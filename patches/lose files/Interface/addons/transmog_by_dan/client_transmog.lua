@@ -248,42 +248,36 @@ local function OnEnterItemToolTip(btn)
 end
 
 function TransmogrifyToolTip(btn)
-	local itemId = btn:GetID()
 	GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
 	GameTooltip:AddLine("Transmogrify", 1, 1, 1)
 	GameTooltip:Show()
 end
 
 function RestoreItemToolTip(btn)
-	local itemId = btn:GetID()
 	GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
 	GameTooltip:AddLine("Restore Item Appearance", 1, 1, 1)
 	GameTooltip:Show()
 end
 
 function HideItemToolTip(btn)
-	local itemId = btn:GetID()
 	GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
 	GameTooltip:AddLine("Hide Item", 1, 1, 1)
 	GameTooltip:Show()
 end
 
 function RestoreAllItemsToolTip(btn)
-	local itemId = btn:GetID()
 	GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
 	GameTooltip:AddLine("Restore All Item Appearances", 1, 1, 1)
 	GameTooltip:Show()
 end
 
 function HideAllItemsToolTip(btn)
-	local itemId = btn:GetID()
 	GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
 	GameTooltip:AddLine("Hide All Items", 1, 1, 1)
 	GameTooltip:Show()
 end
 
 function ShowCloakToolTip(btn)
-	local itemId = btn:GetID()
 	GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
 	GameTooltip:AddLine("Toggle Character Cloak Display", 1, 1, 1)
 	GameTooltip:AddLine("This checkbox provides the same function as", 1, 0.8, 0)
@@ -294,7 +288,6 @@ function ShowCloakToolTip(btn)
 end
 
 function ShowHelmToolTip(btn)
-	local itemId = btn:GetID()
 	GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
 	GameTooltip:AddLine("Toggle Character Helm Display", 1, 1, 1)
 	GameTooltip:AddLine("This checkbox provides the same function as", 1, 0.8, 0)
