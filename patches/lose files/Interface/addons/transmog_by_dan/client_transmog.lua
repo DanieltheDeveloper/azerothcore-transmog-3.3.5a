@@ -60,7 +60,7 @@ function TableSetHelper(list)
     return set
 end
 
-local EMPTY_TEXTURE = "Interface\\AddOns\\transmog_by_dan\\assets\\Transmog-Icon"
+local EMPTY_TEXTURE = "Interface\\AddOns\\transmog_by_dan\\assets\\Transmog-Icon-Inactive"
 local EMPTY_EQUIPMENT_ICON_BACKGROUND_PATH = "Interface\\paperdoll\\UI-PaperDoll-Slot-"
 local EQUIPMENT_ICON_TYPES = {"Head", "", "Shoulder", "Shirt", "Chest", "Waist", "Legs", "Feet", "Wrists", "Hands", "", "", "", "", "Chest", "MainHand", "SecondaryHand", "Ranged", "Tabard"}
 -- List of character item frames that will be used
@@ -234,7 +234,7 @@ function OnClickRestoreAllButton(btn)
 	TransmogModelFrame:Undress()
 end
 
-local function OnLeaveItemToolTip(btn)
+function OnLeaveHideToolTip(btn)
 	GameTooltip:Hide()
 end
 
@@ -244,6 +244,63 @@ local function OnEnterItemToolTip(btn)
 	GameTooltip:SetHyperlink("item:"..itemId..":0:0:0:0:0:0:0")
 	GameTooltip:AddLine(" ")
 	GameTooltip:AddLine("Click to preview this item.", 0, 1, 0)
+	GameTooltip:Show()
+end
+
+function TransmogrifyToolTip(btn)
+	local itemId = btn:GetID()
+	GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
+	GameTooltip:AddLine("Transmogrify", 1, 1, 1)
+	GameTooltip:Show()
+end
+
+function RestoreItemToolTip(btn)
+	local itemId = btn:GetID()
+	GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
+	GameTooltip:AddLine("Restore Item Appearance", 1, 1, 1)
+	GameTooltip:Show()
+end
+
+function HideItemToolTip(btn)
+	local itemId = btn:GetID()
+	GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
+	GameTooltip:AddLine("Hide Item", 1, 1, 1)
+	GameTooltip:Show()
+end
+
+function RestoreAllItemsToolTip(btn)
+	local itemId = btn:GetID()
+	GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
+	GameTooltip:AddLine("Restore All Item Appearances", 1, 1, 1)
+	GameTooltip:Show()
+end
+
+function HideAllItemsToolTip(btn)
+	local itemId = btn:GetID()
+	GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
+	GameTooltip:AddLine("Hide All Items", 1, 1, 1)
+	GameTooltip:Show()
+end
+
+function ShowCloakToolTip(btn)
+	local itemId = btn:GetID()
+	GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
+	GameTooltip:AddLine("Toggle Character Cloak Display", 1, 1, 1)
+	GameTooltip:AddLine("This checkbox provides the same function as", 1, 0.8, 0)
+	GameTooltip:AddLine("ticking or unticking the \"Show Cloak\" checkbox", 1, 0.8, 0)
+	GameTooltip:AddLine("in the interface options menu. It will have no", 1, 0.8, 0)
+	GameTooltip:AddLine("effect on the transmogrify preview window.", 1, 0.8, 0)
+	GameTooltip:Show()
+end
+
+function ShowHelmToolTip(btn)
+	local itemId = btn:GetID()
+	GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
+	GameTooltip:AddLine("Toggle Character Helm Display", 1, 1, 1)
+	GameTooltip:AddLine("This checkbox provides the same function as", 1, 0.8, 0)
+	GameTooltip:AddLine("ticking or unticking the \"Show Helm\" checkbox", 1, 0.8, 0)
+	GameTooltip:AddLine("in the interface options menu. It will have no", 1, 0.8, 0)
+	GameTooltip:AddLine("effect on the transmogrify preview window.", 1, 0.8, 0)
 	GameTooltip:Show()
 end
 
@@ -299,7 +356,7 @@ local function InitTabSlots()
 		itemButton:SetPoint("BOTTOMLEFT", 6, 28)
 		itemButton:SetScript("OnClick", OnClickItemTransmogButton)
 		itemButton:SetScript("OnEnter", OnEnterItemToolTip)
-		itemButton:SetScript("OnLeave", OnLeaveItemToolTip)
+		itemButton:SetScript("OnLeave", OnLeaveHideToolTip)
 		itemButton:RegisterForClicks("AnyUp");
 		itemButton:Disable()
 		lastSlot = itemChild
@@ -483,7 +540,7 @@ end
 
 local function TransmogTabTooltip(btn)
 	GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
-	GameTooltip:AddLine("Transmogrify")
+	GameTooltip:AddLine("Transmogrify", 1, 1, 1)
 	GameTooltip:Show()
 end
 
