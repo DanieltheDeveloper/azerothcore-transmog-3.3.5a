@@ -26,6 +26,8 @@
 		</Layers>
 		<Scripts>
 			<OnClick function="OnClickRestoreCurrentTransmogSlot"/>
+			<OnEnter function="RestoreItemToolTip"/>
+			<OnLeave function="OnLeaveHideToolTip"/>
 		</Scripts>
 	</Button>
 	<Button name="TransmogCharacterSlotHideButtonTemplate" virtual="true">
@@ -54,6 +56,8 @@
 		</Layers>
 		<Scripts>
 			<OnClick function="OnClickHideCurrentTransmogSlot"/>
+			<OnEnter function="HideItemToolTip"/>
+			<OnLeave function="OnLeaveHideToolTip"/>
 		</Scripts>
 	</Button>
 	<Button name="TransmogItemSlotButtonTemplate" inherits="ItemButtonTemplate" virtual="true">
@@ -144,6 +148,10 @@
 				</Texture>
 			</Layer>
 		</Layers>
+		<Scripts>
+			<OnEnter function="RestoreAllItemsToolTip"/>
+			<OnLeave function="OnLeaveHideToolTip"/>
+		</Scripts>
 	</Button>
 	<Button name="HideButtonTemplate" virtual="true">
 		<Size x="40" y="40"/>
@@ -166,6 +174,10 @@
 				</Texture>
 			</Layer>
 		</Layers>
+		<Scripts>
+			<OnEnter function="HideAllItemsToolTip"/>
+			<OnLeave function="OnLeaveHideToolTip"/>
+		</Scripts>
 	</Button>
 	<Frame name="TransmogFrame" parent="UIParent" toplevel="true" setAllPoints="true" id="6" hidden="true" enableMouse="true" movable="true" frameStrata="DIALOG">
 		<Size x="1200" y="700"/>
@@ -464,6 +476,8 @@
 					</Layer>
 				</Layers>
 				<Scripts>
+					<OnEnter function="TransmogrifyToolTip"/>
+					<OnLeave function="OnLeaveHideToolTip"/>
 					<OnClick function="OnClickApplyAllowTransmogs"/>
 				</Scripts>
 			</Button>
@@ -502,12 +516,20 @@
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="ShowCloakText" x="-24" y="0"/>
 				</Anchors>
+				<Scripts>
+					<OnEnter function="ShowCloakToolTip"/>
+					<OnLeave function="OnLeaveHideToolTip"/>
+				</Scripts>
 			</CheckButton>
 			<CheckButton name="ShowHelmCheckBox" inherits="UICheckButtonTemplate">
 				<Size x="24" y="24"/>
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="ShowHelmText" x="-24" y="0"/>
 				</Anchors>
+				<Scripts>
+					<OnEnter function="ShowHelmToolTip"/>
+					<OnLeave function="OnLeaveHideToolTip"/>
+				</Scripts>
 			</CheckButton>
 		</Frames>
 		<Scripts>
