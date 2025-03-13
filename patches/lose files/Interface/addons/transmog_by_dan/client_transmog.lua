@@ -794,6 +794,80 @@ function InitializeCloakHelmCheckboxes()
     end)
 end
 
+function TransmogModelMouseRotation(modelFrame)
+	local rotationArea = CreateFrame("Frame", modelFrame:GetName().."RotationArea", modelFrame)
+	rotationArea:SetSize(160, 280)
+	rotationArea:SetPoint("CENTER", 0, 0)
+	
+	-- Highlight the rotation area for development
+	-- local texture = rotationArea:CreateTexture(nil, "OVERLAY")
+	-- texture:SetAllPoints()
+	-- texture:SetTexture(1, 0, 0, 0.3)
+	
+	rotationArea:EnableMouse(true)
+	modelFrame.isMouseRotating = false
+	modelFrame.lastCursorX = 0
+	
+	rotationArea:SetScript("OnMouseDown", function(frame, button)
+		if button == "LeftButton" then
+			modelFrame.isMouseRotating = true
+			modelFrame.lastCursorX = GetCursorPosition()
+			if not _G["TransmogMouseCapture"] then
+				local captureFrame = CreateFrame("Frame", "TransmogMouseCapture", UIParent)
+				captureFrame:SetFrameStrata("TOOLTIP")
+				captureFrame:SetAllPoints(UIParent)
+				captureFrame:EnableMouse(true)
+				captureFrame:Hide()
+				captureFrame:SetScript("OnMouseUp", function(captureFrame, button)
+					if button == "LeftButton" and modelFrame.isMouseRotating then
+						modelFrame.isMouseRotating = false
+						modelFrame:SetScript("OnUpdate", nil)
+						captureFrame:Hide()
+					end
+				end)
+			end
+			
+			TransmogMouseCapture:Show()
+			
+			modelFrame:SetScript("OnUpdate", function()
+				if modelFrame.isMouseRotating then
+					local currentX = GetCursorPosition()
+					-- Controls mouse rotation speed
+					local diff = (currentX - modelFrame.lastCursorX) * 0.02
+					modelFrame:SetFacing(modelFrame:GetFacing() + diff)
+					modelFrame.lastCursorX = currentX
+				end
+			end)
+		end
+	end)
+	
+	rotationArea:SetScript("OnMouseUp", function(frame, button)
+		if button == "LeftButton" and modelFrame.isMouseRotating then
+			modelFrame.isMouseRotating = false
+			modelFrame:SetScript("OnUpdate", nil)
+			if _G["TransmogMouseCapture"] then
+				TransmogMouseCapture:Hide()
+			end
+		end
+	end)
+	
+	modelFrame:HookScript("OnHide", function(frame)
+		if modelFrame.isMouseRotating then
+			modelFrame.isMouseRotating = false
+			modelFrame:SetScript("OnUpdate", nil)
+			if _G["TransmogMouseCapture"] then
+				TransmogMouseCapture:Hide()
+			end
+		end
+	end)
+	
+	rotationArea:SetScript("OnLeave", function(frame)
+		GameTooltip:Hide()
+	end)
+	
+	modelFrame.rotationArea = rotationArea
+end
+
 function OnTransmogFrameLoad(self)
 	ItemSearchInput:SetText("|cff808080Filter Item Appearance|r")
 	ItemSearchInput:SetScript("OnEnterPressed", SetSearchTab)
@@ -827,6 +901,8 @@ function OnTransmogFrameLoad(self)
 	TransmogFrame:SetScript("OnEvent", OnEventEnterWorldReloadTransmogIds)
 
 	SetItemButtonTexture(_G["SaveButton"], "Interface\\AddOns\\transmog_by_dan\\assets\\Transmog-Icon")
+
+	TransmogModelMouseRotation(TransmogModelFrame)
 
 	UpdateAllSlotTextures()
 end
