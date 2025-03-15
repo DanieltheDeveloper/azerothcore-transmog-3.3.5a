@@ -20,12 +20,10 @@ For help read the mod-eluna documentation for AzerothCore [here](https://github.
 
 ## Know Bugs: Currently under development
 
-- The click area is off-center because the UI button for deletion and reset is not properly centered
 - Equipment icons are not reliable be wrong, grey or display no item (May already be fixed!)
 
 ## WIP
 
-- Sound for reset and delete buttons
 - Spam prevention (click events)
 - Display small info text on items if you have previously obtained the transmog/display id
 - Search with display id

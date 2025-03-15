@@ -60,7 +60,7 @@ function TableSetHelper(list)
     return set
 end
 
-local EMPTY_TEXTURE = "Interface\\AddOns\\transmog_by_dan\\assets\\Transmog-Icon"
+local EMPTY_TEXTURE = "Interface\\AddOns\\transmog_by_dan\\assets\\Transmog-Icon-Inactive"
 local EMPTY_EQUIPMENT_ICON_BACKGROUND_PATH = "Interface\\paperdoll\\UI-PaperDoll-Slot-"
 local EQUIPMENT_ICON_TYPES = {"Head", "", "Shoulder", "Shirt", "Chest", "Waist", "Legs", "Feet", "Wrists", "Hands", "", "", "", "", "Chest", "MainHand", "SecondaryHand", "Ranged", "Tabard"}
 -- List of character item frames that will be used
@@ -201,7 +201,7 @@ function LoadTransmogsFromCurrentIds()
 end
 
 local function OnClickItemTransmogButton(btn, buttonType)
-	PlaySound("GAMEGENERICBUTTONPRESS", "master")
+	PlaySound("igMainMenuOptionCheckBoxOn", "sfx")
 	LoadTransmogsFromCurrentIds()
 	local itemId = btn:GetID()
 	local textureName = GetItemIcon(itemId)
@@ -212,8 +212,8 @@ local function OnClickItemTransmogButton(btn, buttonType)
     --SetItemButtonTexture(_G["Character" .. slotName .. "Slot"], textureName)
 end
 
-function OnClickResetAllButton(btn)
-	PlaySound("GAMEGENERICBUTTONPRESS", "master")
+function OnClickHideAllButton(btn)
+	PlaySound("Glyph_MinorDestroy", "sfx")
     for slotName, _ in pairs(SLOT_IDS) do
         currentTransmogIds[slotName] = 0
     end
@@ -222,8 +222,8 @@ function OnClickResetAllButton(btn)
     UpdateAllSlotTextures()
 end
 
-function OnClickDeleteAllButton(btn)
-	PlaySound("GAMEGENERICBUTTONPRESS", "master")
+function OnClickRestoreAllButton(btn)
+	PlaySound("Glyph_MajorCreate", "sfx")
     for slotName, slotId in pairs(SLOT_IDS) do
         currentTransmogIds[slotName] = nil
 		originalTransmogIds[slotName] = nil
@@ -234,7 +234,7 @@ function OnClickDeleteAllButton(btn)
 	TransmogModelFrame:Undress()
 end
 
-local function OnLeaveItemToolTip(btn)
+function OnLeaveHideToolTip(btn)
 	GameTooltip:Hide()
 end
 
@@ -243,8 +243,57 @@ local function OnEnterItemToolTip(btn)
 	GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
 	GameTooltip:SetHyperlink("item:"..itemId..":0:0:0:0:0:0:0")
 	GameTooltip:AddLine(" ")
-	GameTooltip:AddLine("Transmog unlocked from this item", 0, 0, 1)
-	GameTooltip:AddLine("Click to preview item", 1, 0, 0)
+	GameTooltip:AddLine("Click to preview this item.", 0, 1, 0)
+	GameTooltip:Show()
+end
+
+function TransmogrifyToolTip(btn)
+	GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
+	GameTooltip:AddLine("Transmogrify", 1, 1, 1)
+	GameTooltip:Show()
+end
+
+function RestoreItemToolTip(btn)
+	GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
+	GameTooltip:AddLine("Restore Item Appearance", 1, 1, 1)
+	GameTooltip:Show()
+end
+
+function HideItemToolTip(btn)
+	GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
+	GameTooltip:AddLine("Hide Item", 1, 1, 1)
+	GameTooltip:Show()
+end
+
+function RestoreAllItemsToolTip(btn)
+	GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
+	GameTooltip:AddLine("Restore All Item Appearances", 1, 1, 1)
+	GameTooltip:Show()
+end
+
+function HideAllItemsToolTip(btn)
+	GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
+	GameTooltip:AddLine("Hide All Items", 1, 1, 1)
+	GameTooltip:Show()
+end
+
+function ShowCloakToolTip(btn)
+	GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
+	GameTooltip:AddLine("Toggle Character Cloak Display", 1, 1, 1)
+	GameTooltip:AddLine("This checkbox provides the same function as", 1, 0.8, 0)
+	GameTooltip:AddLine("ticking or unticking the \"Show Cloak\" checkbox", 1, 0.8, 0)
+	GameTooltip:AddLine("in the interface options menu. It will have no", 1, 0.8, 0)
+	GameTooltip:AddLine("effect on the transmogrify preview window.", 1, 0.8, 0)
+	GameTooltip:Show()
+end
+
+function ShowHelmToolTip(btn)
+	GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
+	GameTooltip:AddLine("Toggle Character Helm Display", 1, 1, 1)
+	GameTooltip:AddLine("This checkbox provides the same function as", 1, 0.8, 0)
+	GameTooltip:AddLine("ticking or unticking the \"Show Helm\" checkbox", 1, 0.8, 0)
+	GameTooltip:AddLine("in the interface options menu. It will have no", 1, 0.8, 0)
+	GameTooltip:AddLine("effect on the transmogrify preview window.", 1, 0.8, 0)
 	GameTooltip:Show()
 end
 
@@ -300,7 +349,7 @@ local function InitTabSlots()
 		itemButton:SetPoint("BOTTOMLEFT", 6, 28)
 		itemButton:SetScript("OnClick", OnClickItemTransmogButton)
 		itemButton:SetScript("OnEnter", OnEnterItemToolTip)
-		itemButton:SetScript("OnLeave", OnLeaveItemToolTip)
+		itemButton:SetScript("OnLeave", OnLeaveHideToolTip)
 		itemButton:RegisterForClicks("AnyUp");
 		itemButton:Disable()
 		lastSlot = itemChild
@@ -326,13 +375,13 @@ function SetSearchInputFocus()
 end
 
 function OnClickNextPage(btn)
-	PlaySound("GAMEGENERICBUTTONPRESS", "master")
+	PlaySound("igAbiliityPageTurn", "sfx")
 	currentPage = currentPage + 1
 	AIO.Handle("Transmog", "SetCurrentSlotItemIds", currentSlot, currentPage)
 end
 
 function OnClickPrevPage(btn)
-	PlaySound("GAMEGENERICBUTTONPRESS", "master")
+	PlaySound("igAbiliityPageTurn", "sfx")
 	if ( currentPage == 1 ) then
 		return;
 	end
@@ -426,8 +475,8 @@ function TransmogItemSlotButton_Update(self)
 	PaperDollItemSlotButton_UpdateLock(self);
 end
 
-function OnClickResetCurrentTransmogSlot(btn)
-	PlaySound("GAMEGENERICBUTTONPRESS", "master")
+function OnClickHideCurrentTransmogSlot(btn)
+	PlaySound("ArcaneMissileImpacts", "sfx")
     local slotName = TRANSMOG_SLOT_MAPPING[currentSlot]
     currentTransmogIds[slotName] = 0
     UpdateSlotTexture(slotName, false)
@@ -437,9 +486,9 @@ function OnClickResetCurrentTransmogSlot(btn)
     LoadTransmogsFromCurrentIds()
 end
 
--- Why delete only working without the transmog 0 applied? Why transmog 0?!
-function OnClickDeleteCurrentTransmogSlot(btn)
-	PlaySound("GAMEGENERICBUTTONPRESS", "master")
+-- Why restore only working without the transmog 0 applied? Why transmog 0?!
+function OnClickRestoreCurrentTransmogSlot(btn)
+	PlaySound("Glyph_MinorCreate", "sfx")
     local slotName = TRANSMOG_SLOT_MAPPING[currentSlot]
     currentTransmogIds[slotName] = nil
     originalTransmogIds[slotName] = nil
@@ -473,7 +522,7 @@ function TransmogHandlers.GetLocale(player, item, count)
 end
 
 function OnClickApplyAllowTransmogs(btn)
-	PlaySound("GAMEGENERICBUTTONPRESS", "master")
+	PlaySound("Distract Impact", "sfx")
     for slotName, entryId in pairs(SLOT_IDS) do
         local transmogId = currentTransmogIds[slotName]
         AIO.Handle("Transmog", "EquipTransmogItem", transmogId, entryId)
@@ -484,7 +533,7 @@ end
 
 local function TransmogTabTooltip(btn)
 	GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
-	GameTooltip:AddLine("Transmog")
+	GameTooltip:AddLine("Transmogrify", 1, 1, 1)
 	GameTooltip:Show()
 end
 
@@ -543,7 +592,7 @@ function TransmogHandlers.InitTab(player, newSlotItemIds, page, hasMorePages)
 end
 
 function SetSearchTab()
-	PlaySound("INTERFACESOUND_CHARWINDOWTAB", "master")
+	PlaySound("igSpellBookSpellIconPickup", "sfx")
 	currentPage = 1
 	TransmogPaginationText:SetText("Page 1")
 	AIO.Handle("Transmog", "SetSearchCurrentSlotItemIds", currentSlot, currentPage, ItemSearchInput:GetText())
@@ -551,21 +600,21 @@ function SetSearchTab()
 end
 
 function SetTab()
-	if ( ItemSearchInput:GetText() ~= "" and ItemSearchInput:GetText() ~= "|cff808080Click here and start typing...|r") then
+	if ( ItemSearchInput:GetText() ~= "" and ItemSearchInput:GetText() ~= "|cff808080Filter Item Appearance|r") then
 		SetSearchTab()
 		return;
 	end
-	PlaySound("INTERFACESOUND_CHARWINDOWTAB", "master")
+	PlaySound("igSpellBookSpellIconPickup", "sfx")
 	currentPage = 1
 	TransmogPaginationText:SetText("Page 1")
 	for slot, value in pairs(SLOT_IDS) do
 		_G["TransmogCharacter"..slot.."Slot"].toastTexture:SetTexture("Interface\\AddOns\\transmog_by_dan\\assets\\Transmog-Overlay-Toast")
-		_G["TransmogCharacter"..slot.."Slot"].resetButton:Hide()
-		_G["TransmogCharacter"..slot.."Slot"].deleteButton:Hide()
+		_G["TransmogCharacter"..slot.."Slot"].restoreButton:Hide()
+		_G["TransmogCharacter"..slot.."Slot"].hideButton:Hide()
 	end
 	_G["TransmogCharacter"..TRANSMOG_SLOT_MAPPING[currentSlot].."Slot"].toastTexture:SetTexture("Interface\\AddOns\\transmog_by_dan\\assets\\Transmog-Overlay-Selected")
-	_G["TransmogCharacter"..TRANSMOG_SLOT_MAPPING[currentSlot].."Slot"].resetButton:Show()
-	_G["TransmogCharacter"..TRANSMOG_SLOT_MAPPING[currentSlot].."Slot"].deleteButton:Show()
+	_G["TransmogCharacter"..TRANSMOG_SLOT_MAPPING[currentSlot].."Slot"].restoreButton:Show()
+	_G["TransmogCharacter"..TRANSMOG_SLOT_MAPPING[currentSlot].."Slot"].hideButton:Show()
 	AIO.Handle("Transmog", "SetCurrentSlotItemIds", currentSlot, currentPage)
 end
 
@@ -596,7 +645,7 @@ function TransmogHandlers.SetTransmogItemIdClient(player, slot, id, realItemId)
         end
     end
 
-    -- Reset all slot textures
+    -- Restore all slot textures
     UpdateAllSlotTextures()
 end
 
@@ -712,19 +761,118 @@ function TransmogItemSlotButton_OnLoad(self)
 	--itemSlotButtons[id] = self;
 end
 
+function InitializeCloakHelmCheckboxes()
+    ShowCloakCheckBox:SetChecked(ShowingCloak())
+    ShowCloakCheckBox:SetScript("OnClick", function(self)
+        local value = self:GetChecked() and "1" or "0"
+        if value == "1" then
+            PlaySound("igMainMenuOptionCheckBoxOn", "sfx")
+        else
+            PlaySound("igMainMenuOptionCheckBoxOff", "sfx")
+        end
+        ShowCloak(value == "1")
+    end)
+    
+    ShowHelmCheckBox:SetChecked(ShowingHelm())
+    ShowHelmCheckBox:SetScript("OnClick", function(self)
+        local value = self:GetChecked() and "1" or "0"
+        if value == "1" then
+            PlaySound("igMainMenuOptionCheckBoxOn", "sfx")
+        else
+            PlaySound("igMainMenuOptionCheckBoxOff", "sfx")
+        end
+        ShowHelm(value == "1")
+    end)
+    
+    local frame = CreateFrame("Frame")
+    frame:RegisterEvent("PLAYER_FLAGS_CHANGED")
+    frame:SetScript("OnEvent", function(self, event, unit)
+        if unit == "player" then
+            ShowCloakCheckBox:SetChecked(ShowingCloak())
+            ShowHelmCheckBox:SetChecked(ShowingHelm())
+        end
+    end)
+end
+
+function TransmogModelMouseRotation(modelFrame)
+	local rotationArea = CreateFrame("Frame", modelFrame:GetName().."RotationArea", modelFrame)
+	rotationArea:SetSize(160, 280)
+	rotationArea:SetPoint("CENTER", 0, 0)
+	
+	-- Highlight the rotation area for development
+	-- local texture = rotationArea:CreateTexture(nil, "OVERLAY")
+	-- texture:SetAllPoints()
+	-- texture:SetTexture(1, 0, 0, 0.3)
+	
+	rotationArea:EnableMouse(true)
+	modelFrame.isMouseRotating = false
+	modelFrame.lastCursorX = 0
+	
+	rotationArea:SetScript("OnMouseDown", function(frame, button)
+		if button == "LeftButton" then
+			modelFrame.isMouseRotating = true
+			modelFrame.lastCursorX = GetCursorPosition()
+			if not _G["TransmogMouseCapture"] then
+				local captureFrame = CreateFrame("Frame", "TransmogMouseCapture", UIParent)
+				captureFrame:SetFrameStrata("TOOLTIP")
+				captureFrame:SetAllPoints(UIParent)
+				captureFrame:EnableMouse(true)
+				captureFrame:Hide()
+				captureFrame:SetScript("OnMouseUp", function(captureFrame, button)
+					if button == "LeftButton" and modelFrame.isMouseRotating then
+						modelFrame.isMouseRotating = false
+						modelFrame:SetScript("OnUpdate", nil)
+						captureFrame:Hide()
+					end
+				end)
+			end
+			
+			TransmogMouseCapture:Show()
+			
+			modelFrame:SetScript("OnUpdate", function()
+				if modelFrame.isMouseRotating then
+					local currentX = GetCursorPosition()
+					-- Controls mouse rotation speed
+					local diff = (currentX - modelFrame.lastCursorX) * 0.02
+					modelFrame:SetFacing(modelFrame:GetFacing() + diff)
+					modelFrame.lastCursorX = currentX
+				end
+			end)
+		end
+	end)
+	
+	rotationArea:SetScript("OnMouseUp", function(frame, button)
+		if button == "LeftButton" and modelFrame.isMouseRotating then
+			modelFrame.isMouseRotating = false
+			modelFrame:SetScript("OnUpdate", nil)
+			if _G["TransmogMouseCapture"] then
+				TransmogMouseCapture:Hide()
+			end
+		end
+	end)
+	
+	modelFrame:HookScript("OnHide", function(frame)
+		if modelFrame.isMouseRotating then
+			modelFrame.isMouseRotating = false
+			modelFrame:SetScript("OnUpdate", nil)
+			if _G["TransmogMouseCapture"] then
+				TransmogMouseCapture:Hide()
+			end
+		end
+	end)
+	
+	rotationArea:SetScript("OnLeave", function(frame)
+		GameTooltip:Hide()
+	end)
+	
+	modelFrame.rotationArea = rotationArea
+end
+
 function OnTransmogFrameLoad(self)
-	ItemSearchInput:SetText("|cff808080Click here and start typing...|r")
+	ItemSearchInput:SetText("|cff808080Filter Item Appearance|r")
 	ItemSearchInput:SetScript("OnEnterPressed", SetSearchTab)
 	
 	InitTabSlots()
-	
-	local leftFontString = LeftButton:GetFontString()
-	leftFontString:SetShadowOffset(1, -1)
-	leftFontString:SetPoint("CENTER", 0, 2)
-	
-	local rightFontString = RightButton:GetFontString()
-	rightFontString:SetShadowOffset(1, -1)
-	rightFontString:SetPoint("CENTER", 0, 2)
 	
 	characterTransmogTab = CreateFrame("CheckButton", "CharacterFrameTab6", CharacterFrame, "SpellBookSkillLineTabTemplate")
 	characterTransmogTab:SetSize(32, 32);
@@ -740,7 +888,7 @@ function OnTransmogFrameLoad(self)
 	TransmogCloseButton:SetScript("OnClick", function(self) if ( TransmogFrame:IsShown() ) then TransmogFrame:Hide() return; end TransmogFrame:Show() end)
 
 	PaperDollFrame:SetScript("OnShow", PaperDollFrame_OnShow)
-
+	InitializeCloakHelmCheckboxes()
 	
 	-- This enables saving of the position of the frame over reload of the UI or restarting game
 	AIO.SavePosition(TransmogFrame)
@@ -754,11 +902,13 @@ function OnTransmogFrameLoad(self)
 
 	SetItemButtonTexture(_G["SaveButton"], "Interface\\AddOns\\transmog_by_dan\\assets\\Transmog-Icon")
 
+	TransmogModelMouseRotation(TransmogModelFrame)
+
 	UpdateAllSlotTextures()
 end
 
 function OnClickTransmogButton(self)
-	PlaySound("GAMEGENERICBUTTONPRESS", "master")
+	PlaySound("AchievementMenuOpen", "sfx")
 	for slot, _ in pairs(SLOT_IDS) do
 		currentTransmogIds[slot] = originalTransmogIds[slot]
 	end
@@ -768,12 +918,14 @@ function OnClickTransmogButton(self)
 	characterTransmogTab:SetChecked(true)
 	isInputHovered = false
 	AIO.Handle("Transmog", "SetCurrentSlotItemIds", currentSlot, 1)
-	ItemSearchInput:SetText("|cff808080Click here and start typing...|r")
+	ItemSearchInput:SetText("|cff808080Filter Item Appearance|r")
 	LoadTransmogsFromCurrentIds()
+	ShowCloakCheckBox:SetChecked(ShowingCloak())
+	ShowHelmCheckBox:SetChecked(ShowingHelm())
 end
 
 function OnHideTransmogFrame(self)
-	PlaySound("INTERFACESOUND_CHARWINDOWCLOSE", "master")
+	PlaySound("AchievementMenuClose", "sfx")
 	for slot, _ in pairs(SLOT_IDS) do
 		currentTransmogIds[slot] = originalTransmogIds[slot]
 	end
