@@ -201,7 +201,7 @@ function LoadTransmogsFromCurrentIds()
 end
 
 local function OnClickItemTransmogButton(btn, buttonType)
-	PlaySound("GAMEGENERICBUTTONPRESS", "master")
+	PlaySound("igMainMenuOptionCheckBoxOn", "sfx")
 	LoadTransmogsFromCurrentIds()
 	local itemId = btn:GetID()
 	local textureName = GetItemIcon(itemId)
@@ -213,7 +213,7 @@ local function OnClickItemTransmogButton(btn, buttonType)
 end
 
 function OnClickHideAllButton(btn)
-	PlaySound("GAMEGENERICBUTTONPRESS", "master")
+	PlaySound("Glyph_MinorDestroy", "sfx")
     for slotName, _ in pairs(SLOT_IDS) do
         currentTransmogIds[slotName] = 0
     end
@@ -223,7 +223,7 @@ function OnClickHideAllButton(btn)
 end
 
 function OnClickRestoreAllButton(btn)
-	PlaySound("GAMEGENERICBUTTONPRESS", "master")
+	PlaySound("Glyph_MajorCreate", "sfx")
     for slotName, slotId in pairs(SLOT_IDS) do
         currentTransmogIds[slotName] = nil
 		originalTransmogIds[slotName] = nil
@@ -375,13 +375,13 @@ function SetSearchInputFocus()
 end
 
 function OnClickNextPage(btn)
-	PlaySound("GAMEGENERICBUTTONPRESS", "master")
+	PlaySound("igAbiliityPageTurn", "sfx")
 	currentPage = currentPage + 1
 	AIO.Handle("Transmog", "SetCurrentSlotItemIds", currentSlot, currentPage)
 end
 
 function OnClickPrevPage(btn)
-	PlaySound("GAMEGENERICBUTTONPRESS", "master")
+	PlaySound("igAbiliityPageTurn", "sfx")
 	if ( currentPage == 1 ) then
 		return;
 	end
@@ -476,7 +476,7 @@ function TransmogItemSlotButton_Update(self)
 end
 
 function OnClickHideCurrentTransmogSlot(btn)
-	PlaySound("GAMEGENERICBUTTONPRESS", "master")
+	PlaySound("ArcaneMissileImpacts", "sfx")
     local slotName = TRANSMOG_SLOT_MAPPING[currentSlot]
     currentTransmogIds[slotName] = 0
     UpdateSlotTexture(slotName, false)
@@ -488,7 +488,7 @@ end
 
 -- Why restore only working without the transmog 0 applied? Why transmog 0?!
 function OnClickRestoreCurrentTransmogSlot(btn)
-	PlaySound("GAMEGENERICBUTTONPRESS", "master")
+	PlaySound("Glyph_MinorCreate", "sfx")
     local slotName = TRANSMOG_SLOT_MAPPING[currentSlot]
     currentTransmogIds[slotName] = nil
     originalTransmogIds[slotName] = nil
@@ -522,7 +522,7 @@ function TransmogHandlers.GetLocale(player, item, count)
 end
 
 function OnClickApplyAllowTransmogs(btn)
-	PlaySound("GAMEGENERICBUTTONPRESS", "master")
+	PlaySound("Distract Impact", "sfx")
     for slotName, entryId in pairs(SLOT_IDS) do
         local transmogId = currentTransmogIds[slotName]
         AIO.Handle("Transmog", "EquipTransmogItem", transmogId, entryId)
@@ -592,7 +592,7 @@ function TransmogHandlers.InitTab(player, newSlotItemIds, page, hasMorePages)
 end
 
 function SetSearchTab()
-	PlaySound("INTERFACESOUND_CHARWINDOWTAB", "master")
+	PlaySound("igSpellBookSpellIconPickup", "sfx")
 	currentPage = 1
 	TransmogPaginationText:SetText("Page 1")
 	AIO.Handle("Transmog", "SetSearchCurrentSlotItemIds", currentSlot, currentPage, ItemSearchInput:GetText())
@@ -604,7 +604,7 @@ function SetTab()
 		SetSearchTab()
 		return;
 	end
-	PlaySound("INTERFACESOUND_CHARWINDOWTAB", "master")
+	PlaySound("igSpellBookSpellIconPickup", "sfx")
 	currentPage = 1
 	TransmogPaginationText:SetText("Page 1")
 	for slot, value in pairs(SLOT_IDS) do
@@ -766,9 +766,9 @@ function InitializeCloakHelmCheckboxes()
     ShowCloakCheckBox:SetScript("OnClick", function(self)
         local value = self:GetChecked() and "1" or "0"
         if value == "1" then
-            PlaySound("igMainMenuOptionCheckBoxOn", "master")
+            PlaySound("igMainMenuOptionCheckBoxOn", "sfx")
         else
-            PlaySound("igMainMenuOptionCheckBoxOff", "master")
+            PlaySound("igMainMenuOptionCheckBoxOff", "sfx")
         end
         ShowCloak(value == "1")
     end)
@@ -777,9 +777,9 @@ function InitializeCloakHelmCheckboxes()
     ShowHelmCheckBox:SetScript("OnClick", function(self)
         local value = self:GetChecked() and "1" or "0"
         if value == "1" then
-            PlaySound("igMainMenuOptionCheckBoxOn", "master")
+            PlaySound("igMainMenuOptionCheckBoxOn", "sfx")
         else
-            PlaySound("igMainMenuOptionCheckBoxOff", "master")
+            PlaySound("igMainMenuOptionCheckBoxOff", "sfx")
         end
         ShowHelm(value == "1")
     end)
@@ -908,7 +908,7 @@ function OnTransmogFrameLoad(self)
 end
 
 function OnClickTransmogButton(self)
-	PlaySound("GAMEGENERICBUTTONPRESS", "master")
+	PlaySound("AchievementMenuOpen", "sfx")
 	for slot, _ in pairs(SLOT_IDS) do
 		currentTransmogIds[slot] = originalTransmogIds[slot]
 	end
@@ -925,7 +925,7 @@ function OnClickTransmogButton(self)
 end
 
 function OnHideTransmogFrame(self)
-	PlaySound("INTERFACESOUND_CHARWINDOWCLOSE", "master")
+	PlaySound("AchievementMenuClose", "sfx")
 	for slot, _ in pairs(SLOT_IDS) do
 		currentTransmogIds[slot] = originalTransmogIds[slot]
 	end
