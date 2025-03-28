@@ -197,23 +197,23 @@
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
-				<FontString name="Title" text="Transmogrify" parentKey="TitleText" inherits="GameFontNormalHuge">
+				<FontString name="Title" parentKey="TitleText" inherits="GameFontNormalHuge">
 					<Anchors>
 						<Anchor point="CENTER" x="0" y="207"/>
 					</Anchors>
                 </FontString>
-				<FontString name="Subtitle" text="Collected Item Appearances" parentKey="SubtitleText" inherits="GameFontNormal">
+				<FontString name="Subtitle" parentKey="SubtitleText" inherits="GameFontNormal">
 					<Anchors>
 						<Anchor point="CENTER" x="0" y="187"/>
 					</Anchors>
 					<Color r="0.7" g="0.7" b="0.7"/>
 				</FontString>
-				<FontString name="ShowCloakText" text="Show Cloak" inherits="GameFontNormal">
+				<FontString name="ShowCloakText" inherits="GameFontNormal">
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" x="145" y="60"/>
 					</Anchors>
 				</FontString>
-				<FontString name="ShowHelmText" text="Show Helm" inherits="GameFontNormal">
+				<FontString name="ShowHelmText" inherits="GameFontNormal">
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" x="254" y="60"/>
 					</Anchors>
@@ -531,7 +531,29 @@
 					<OnLeave function="OnLeaveHideToolTip"/>
 				</Scripts>
 			</CheckButton>
-		</Frames>
+			<Button name="RecoverTransmogButton">
+				<Size x="24" y="24"/>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" x="80" y="60"/>
+				</Anchors>
+				<Texture file="Interface\AddOns\transmog_by_dan\assets\UI-QuestLog-BookIcon"/>
+				<PushedTexture file="interface\addons\transmog_by_dan\assets\Transmog-Overlay-Hide"/>
+				<HighlightTexture file="Interface\Buttons\ButtonHilight-Square" alphaMode="ADD"/>
+				<Scripts>
+					<OnClick function="RecoverMissingTransmogs"/>
+					<OnEnter>
+						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+						GameTooltip:ClearLines();
+						GameTooltip:AddLine(RecoverTransmogTooltipTitle, 1, 1, 1);
+						GameTooltip:AddLine(RecoverTransmogTooltipDesc, 0.8, 0.8, 0.8, true);
+						GameTooltip:Show();
+					</OnEnter>
+					<OnLeave>
+						GameTooltip:Hide();
+					</OnLeave>
+				</Scripts>
+			</Button>
+	</Frames>
 		<Scripts>
 			<OnLoad function="OnTransmogFrameLoad"/>
 			<OnHide function="OnHideTransmogFrame"/>
