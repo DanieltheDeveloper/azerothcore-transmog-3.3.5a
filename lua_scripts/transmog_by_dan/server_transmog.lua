@@ -179,7 +179,7 @@ function TransmogrificationHandler.LootItemLocale(player, item, count, locale)
 		
 		local colorCode = qualityColors[itemQuality] or "|cffffffff" -- Default to white if quality not found
 		
-		local itemLink = "|Hitem:" .. itemID .. ":0:0:0:0:0:0:0:0" .. colorCode .. "|h[" .. locItemName .. "]|h|r"
+		local itemLink = "|Hitem:" .. itemID .. ":0:0:0:0:0:0:0:0|h" .. colorCode .. "[" .. locItemName .. "]|r|h|r"
 		player:SendBroadcastMessage(itemLink .. GetLocalizedMessage("LOOT_ITEM_LOCALE", locale))
 	end
 end
