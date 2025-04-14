@@ -1,5 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
-	<Script file="client_transmog.lua"/>
+	<Script file="transmogrification_frame.lua"/>
 	<Button name="TransmogCharacterSlotRestoreButtonTemplate" virtual="true">
 		<Size x="16" y="16"/>
 		<Anchors>
@@ -7,7 +7,7 @@
 		</Anchors>
 		<Layers>
 			<Layer level="OVERLAY">
-				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Restore">
+				<Texture file="Interface\AddOns\Transmogrification\assets\Transmog-Overlay-Restore">
 					<Size x="23" y="23"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
@@ -15,7 +15,7 @@
 				</Texture>
 			</Layer>
 			<Layer level="HIGHLIGHT">
-				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Restore">
+				<Texture file="Interface\AddOns\Transmogrification\assets\Transmog-Overlay-Restore">
 					<Size x="23" y="23"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
@@ -37,7 +37,7 @@
 		</Anchors>
 		<Layers>
 			<Layer level="OVERLAY">
-				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Hide">
+				<Texture file="Interface\AddOns\Transmogrification\assets\Transmog-Overlay-Hide">
 					<Size x="21" y="21"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
@@ -45,7 +45,7 @@
 				</Texture>
 			</Layer>
 			<Layer level="HIGHLIGHT">
-				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Hide">
+				<Texture file="Interface\AddOns\Transmogrification\assets\Transmog-Overlay-Hide">
 					<Size x="18" y="18"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
@@ -69,7 +69,7 @@
 						<Anchor point="CENTER"/>
 					</Anchors>
 				</Texture>
-				<Texture parentKey="toastTexture" file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Toast">
+				<Texture parentKey="toastTexture" file="Interface\AddOns\Transmogrification\assets\Transmog-Overlay-Toast">
 					<Size x="64" y="64"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
@@ -102,7 +102,7 @@
 	<Button name="TransmogItemButtonTemplate" inherits="ItemButtonTemplate" virtual="true">
 		<Layers>
 			<Layer level="OVERLAY">
-				<Texture parentKey="toastTexture" file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Toast">
+				<Texture parentKey="toastTexture" file="Interface\AddOns\Transmogrification\assets\Transmog-Overlay-Toast">
 					<Size x="64" y="64"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
@@ -113,7 +113,7 @@
     </Button>
 	<Frame name="TransmogItemWrapperTemplate" virtual="true">
 		<Size x="150" y="180"/>
-		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true" alphaMode="BLEND">
+		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\AddOns\Transmogrification\assets\Transmog-Preview-Border" tile="true" alphaMode="BLEND">
 			<EdgeSize>
 				<AbsValue val="16"/>
 			</EdgeSize>
@@ -131,7 +131,7 @@
 		<Size x="40" y="40"/>
 		<Layers>
 			<Layer level="OVERLAY">
-				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Restore">
+				<Texture file="Interface\AddOns\Transmogrification\assets\Transmog-Overlay-Restore">
 					<Size x="32" y="32"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
@@ -139,7 +139,7 @@
 				</Texture>
 			</Layer>
 			<Layer level="HIGHLIGHT">
-				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Restore">
+				<Texture file="Interface\AddOns\Transmogrification\assets\Transmog-Overlay-Restore">
 					<Size x="32" y="32"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
@@ -157,7 +157,7 @@
 		<Size x="40" y="40"/>
 		<Layers>
 			<Layer level="OVERLAY">
-				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Hide">
+				<Texture file="Interface\AddOns\Transmogrification\assets\Transmog-Overlay-Hide">
 					<Size x="30" y="30"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
@@ -165,7 +165,7 @@
 				</Texture>
 			</Layer>
 			<Layer level="HIGHLIGHT">
-				<Texture file="Interface\AddOns\transmog_by_dan\assets\Transmog-Overlay-Hide">
+				<Texture file="Interface\AddOns\Transmogrification\assets\Transmog-Overlay-Hide">
 					<Size x="25" y="25"/>
 					<Anchors>
 						<Anchor point="CENTER"/>
@@ -179,14 +179,14 @@
 			<OnLeave function="OnLeaveHideToolTip"/>
 		</Scripts>
 	</Button>
-	<Frame name="TransmogFrame" parent="UIParent" toplevel="true" setAllPoints="true" id="6" hidden="true" enableMouse="true" movable="true" frameStrata="DIALOG">
+	<Frame name="TransmogrificationFrame" parent="UIParent" toplevel="true" setAllPoints="true" id="6" hidden="true" enableMouse="true" movable="true" frameStrata="DIALOG">
 		<Size x="1200" y="700"/>
 		<Anchors>
 			<Anchor point="CENTER" relativeTo="UIParent"/>
 		</Anchors>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture name="$parentDialogBG" hWrapMode="false" vWrapMode="false" vertTile="false" horizTile="false" file="Interface\AddOns\transmog_by_dan\assets\Transmog-Frame">
+				<Texture name="$parentDialogBG" hWrapMode="false" vWrapMode="false" vertTile="false" horizTile="false" file="Interface\AddOns\Transmogrification\assets\Transmog-Frame">
 					<Size x="1200" y="700"/>
 					<TexCoords left="0" right="0.52" top="0" bottom="0.66">
 						<Rect ULx="" ULy="" LLx="" LLy="" URx="" URy="" LRx="" LRy="" />
@@ -197,28 +197,28 @@
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
-				<FontString name="Title" text="Transmogrify" parentKey="TitleText" inherits="GameFontNormalHuge">
+				<FontString name="Title" parentKey="TitleText" inherits="GameFontNormalHuge">
 					<Anchors>
 						<Anchor point="CENTER" x="0" y="207"/>
 					</Anchors>
                 </FontString>
-				<FontString name="Subtitle" text="Collected Item Appearances" parentKey="SubtitleText" inherits="GameFontNormal">
+				<FontString name="Subtitle" parentKey="SubtitleText" inherits="GameFontNormal">
 					<Anchors>
 						<Anchor point="CENTER" x="0" y="187"/>
 					</Anchors>
 					<Color r="0.7" g="0.7" b="0.7"/>
 				</FontString>
-				<FontString name="ShowCloakText" text="Show Cloak" inherits="GameFontNormal">
+				<FontString name="ShowCloakText" inherits="GameFontNormal">
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" x="145" y="60"/>
 					</Anchors>
 				</FontString>
-				<FontString name="ShowHelmText" text="Show Helm" inherits="GameFontNormal">
+				<FontString name="ShowHelmText" inherits="GameFontNormal">
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" x="254" y="60"/>
 					</Anchors>
 				</FontString>
-				<FontString name="TransmogPaginationText" text="Page 1" inherits="GameFontNormal">
+				<FontString name="TransmogPaginationText" inherits="GameFontNormal">
 					<Anchors>
 						<Anchor point="BOTTOM" x="186" y="55"/>
 					</Anchors>
@@ -231,7 +231,7 @@
 					<Anchor point="TOPRIGHT" x="-42" y="-84"/>
 				</Anchors>
 			</Button>
-			<DressUpModel name="TransmogModelFrame">
+			<DressUpModel name="TransmogrificationModelFrame">
                 <Size>
                     <AbsDimension x="202" y="380"/>
                 </Size>
@@ -249,7 +249,7 @@
                     </OnLoad>
                 </Scripts>
 				<Frames>
-					<Button name="TransmogModelFrameRotateLeftButton">
+					<Button name="TransmogrificationModelFrameRotateLeftButton">
 						<Size>
 							<AbsDimension x="35" y="35"/>
 						</Size>
@@ -264,7 +264,7 @@
 							<OnMouseDown>
 								self.isRotating = true;
 								self:SetScript("OnUpdate", function()
-									Model_RotateRight(TransmogModelFrame);
+									Model_RotateRight(TransmogrificationModelFrame);
 								end);
 							</OnMouseDown>
 							<OnMouseUp>
@@ -280,18 +280,18 @@
 						<PushedTexture file="Interface\Buttons\UI-RotationLeft-Button-Down"/>
 						<HighlightTexture file="Interface\Buttons\ButtonHilight-Round" alphaMode="ADD"/>
 					</Button>
-					<Button name="TransmogModelFrameRotateRightButton">
+					<Button name="TransmogrificationModelFrameRotateRightButton">
 						<Size>
 							<AbsDimension x="35" y="35"/>
 						</Size>
 						<Anchors>
-							<Anchor point="TOPLEFT" relativeTo="TransmogModelFrameRotateLeftButton" relativePoint="TOPRIGHT"/>
+							<Anchor point="TOPLEFT" relativeTo="TransmogrificationModelFrameRotateLeftButton" relativePoint="TOPRIGHT"/>
 						</Anchors>
 						<Scripts>
 							<OnMouseDown>
 								self.isRotating = true;
 								self:SetScript("OnUpdate", function()
-									Model_RotateLeft(TransmogModelFrame);
+									Model_RotateLeft(TransmogrificationModelFrame);
 								end);
 							</OnMouseDown>
 							<OnMouseUp>
@@ -311,7 +311,7 @@
             </DressUpModel>
 			<Button name="TransmogCharacterHeadSlot" inherits="TransmogItemSlotButtonTemplate">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="TransmogModelFrame" x="-46" y="0"/>
+					<Anchor point="TOPLEFT" relativeTo="TransmogrificationModelFrame" x="-46" y="0"/>
 				</Anchors>
 				<Scripts>
 					<OnClick function="OnClickHeadTab"/>
@@ -453,7 +453,22 @@
 				<DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Disabled"/>
 				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
 			</Button>
-			<Button name="SaveButton" text="Save" inherits="ItemButtonTemplate">
+			<Frame name="TransmogWarningFrame">
+				<Size x="350" y="30"/>
+				<Anchors>
+					<Anchor point="CENTER" x="186" y="-80"/>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString name="TransmogWarningText" inherits="GameFontNormal">
+							<Anchors>
+								<Anchor point="CENTER" x="0" y="0"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
+			<Button name="SaveButton" inherits="ItemButtonTemplate">
 				<Anchors>
 					<Anchor point="BOTTOM" relativeTo="TransmogPaginationText" x="0" y="-60"/>
 				</Anchors>
@@ -467,7 +482,7 @@
 						</Texture>
 					</Layer>
 					<Layer level="OVERLAY">
-						<Texture name="SaveTexture" file="Interface\AddOns\transmog_by_dan\assets\Transmog-Icon-Holder">
+						<Texture name="SaveTexture" file="Interface\AddOns\Transmogrification\assets\Transmog-Icon-Holder">
 							<Size x="192" y="96"/>
 							<Anchors>
 								<Anchor point="CENTER" x="-2" y=""/>
@@ -476,9 +491,9 @@
 					</Layer>
 				</Layers>
 				<Scripts>
-					<OnEnter function="TransmogrifyToolTip"/>
+					<OnEnter function="TransmogrificationToolTip"/>
 					<OnLeave function="OnLeaveHideToolTip"/>
-					<OnClick function="OnClickApplyAllowTransmogs"/>
+					<OnClick function="OnClickApplyAllowTransmogrifications"/>
 				</Scripts>
 			</Button>
 			<Button name="RestoreAllButton" inherits="RestoreButtonTemplate">
@@ -533,8 +548,8 @@
 			</CheckButton>
 		</Frames>
 		<Scripts>
-			<OnLoad function="OnTransmogFrameLoad"/>
-			<OnHide function="OnHideTransmogFrame"/>
+			<OnLoad function="OnTransmogrificationFrameLoad"/>
+			<OnHide function="OnHideTransmogrificationFrame"/>
 			<OnShow function="OnClickTransmogButton"/>
 			<OnDragStart>self:StartMoving();</OnDragStart>
 			<OnDragStop>self:StopMovingOrSizing();</OnDragStop>
