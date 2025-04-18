@@ -493,6 +493,10 @@ function TransmogrificationHandler.SetCurrentSlotItemIDs(player, slot, page)
         equipmentSlot = 2 -- Shoulder
     elseif slot == PLAYER_VISIBLE_ITEM_4_ENTRYID then
         equipmentSlot = 3 -- Shirt
+    elseif slot == PLAYER_VISIBLE_ITEM_5_ENTRYID then
+        equipmentSlot = 4 -- Chest
+    elseif slot == PLAYER_VISIBLE_ITEM_6_ENTRYID then
+        equipmentSlot = 5 -- Waist
     elseif slot == PLAYER_VISIBLE_ITEM_10_ENTRYID then
         equipmentSlot = 9 -- Hands
     elseif slot == PLAYER_VISIBLE_ITEM_15_ENTRYID then
@@ -521,9 +525,17 @@ function TransmogrificationHandler.SetCurrentSlotItemIDs(player, slot, page)
     
     local queryConditions = "account_id = " .. accountGUID .. " AND inventory_type " .. inventoryTypes
     
-    if (RESTRICT_ARMOR_TRANSMOG_TO_SIMILAR_MATERIALS and equippedItemType == 4) or (RESTRICT_WEAPON_TRANSMOG_TO_SIMILAR_WEAPONS and equippedItemType == 2) and equippedItemSubType then
-        queryConditions = queryConditions .. " AND inventory_subtype = " .. equippedItemSubType
-    end
+	if equippedItemSubType then
+		if (RESTRICT_ARMOR_TRANSMOG_TO_SIMILAR_MATERIALS and equippedItemType == 4) then
+			if slot == PLAYER_VISIBLE_ITEM_5_ENTRYID then -- Special check for chestpiece/robes.
+				queryConditions = queryConditions .. " AND inventory_subtype = " .. equippedItemSubType
+			else
+				queryConditions = queryConditions .. " AND inventory_subtype = " .. equippedItemSubType
+			end
+		elseif (RESTRICT_WEAPON_TRANSMOG_TO_SIMILAR_WEAPONS and equippedItemType == 2) then
+			queryConditions = queryConditions .. " AND inventory_subtype = " .. equippedItemSubType
+		end
+	end
 
     -- Query to count matching transmogs
     local countQuery = string.format(
@@ -601,10 +613,14 @@ function TransmogrificationHandler.SetSearchCurrentSlotItemIDs(player, slot, pag
 	
 	if slot == PLAYER_VISIBLE_ITEM_3_ENTRYID then
 		equipmentSlot = 2 -- Shoulder
-	elseif slot == PLAYER_VISIBLE_ITEM_4_ENTRYID then
-		equipmentSlot = 3 -- Shirt
-	elseif slot == PLAYER_VISIBLE_ITEM_10_ENTRYID then
-		equipmentSlot = 9 -- Hands
+    elseif slot == PLAYER_VISIBLE_ITEM_4_ENTRYID then
+        equipmentSlot = 3 -- Shirt
+    elseif slot == PLAYER_VISIBLE_ITEM_5_ENTRYID then
+        equipmentSlot = 4 -- Chest
+    elseif slot == PLAYER_VISIBLE_ITEM_6_ENTRYID then
+        equipmentSlot = 5 -- Waist
+    elseif slot == PLAYER_VISIBLE_ITEM_10_ENTRYID then
+        equipmentSlot = 9 -- Hands
 	elseif slot == PLAYER_VISIBLE_ITEM_15_ENTRYID then
 		equipmentSlot = 14 -- Back
 	elseif slot == PLAYER_VISIBLE_ITEM_16_ENTRYID then
@@ -631,8 +647,16 @@ function TransmogrificationHandler.SetSearchCurrentSlotItemIDs(player, slot, pag
 	
 	local queryConditions = "account_id = " .. player:GetAccountId() .. " AND inventory_type " .. inventoryTypes .. " AND (display_id LIKE '%" .. search .. "%' OR item_name LIKE '%" .. search .. "%')"
 	
-	if (RESTRICT_ARMOR_TRANSMOG_TO_SIMILAR_MATERIALS and equippedItemType == 4) or (RESTRICT_WEAPON_TRANSMOG_TO_SIMILAR_WEAPONS and equippedItemType == 2) and equippedItemSubType then
-		queryConditions = queryConditions .. " AND inventory_subtype = " .. equippedItemSubType
+	if equippedItemSubType then
+		if (RESTRICT_ARMOR_TRANSMOG_TO_SIMILAR_MATERIALS and equippedItemType == 4) then
+			if slot == PLAYER_VISIBLE_ITEM_5_ENTRYID then -- Special check for chestpiece/robes.
+				queryConditions = queryConditions .. " AND inventory_subtype = " .. equippedItemSubType
+			else
+				queryConditions = queryConditions .. " AND inventory_subtype = " .. equippedItemSubType
+			end
+		elseif (RESTRICT_WEAPON_TRANSMOG_TO_SIMILAR_WEAPONS and equippedItemType == 2) then
+			queryConditions = queryConditions .. " AND inventory_subtype = " .. equippedItemSubType
+		end
 	end
 	
 	-- Query to count matching transmogs
