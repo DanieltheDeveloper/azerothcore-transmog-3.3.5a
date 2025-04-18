@@ -189,6 +189,12 @@ function TransmogrificationHandler.LootItemLocale(player, item, count, locale)
 	end
 end
 
+function Transmog_OnEquipItem(event, player, item, bag, slot)
+	local itemID = item:GetItemTemplate():GetItemId()
+	local locale = player:GetDbLocaleIndex()
+	TransmogrificationHandler.LootItemLocale(player, itemID, 1, locale)
+end
+
 function Transmog_OnLootItem(event, player, item, count)
 	local locale = player:GetDbLocaleIndex()
 	TransmogrificationHandler.LootItemLocale(player, item, 1, locale)
@@ -209,50 +215,6 @@ function Transmog_OnQuestComplete(event, player, quest)
 		if itemID and itemID > 0 then
 			TransmogrificationHandler.LootItemLocale(player, itemID, 1, locale)
 		end
-	end
-end
-
-function Transmog_OnEquipItem(event, player, item, bag, slot)
-	local accountGUID = player:GetAccountId()
-	local playerGUID = player:GetGUIDLow()
-	local class = item:GetClass()
-	local inventoryType = item:GetItemTemplate():GetInventoryType()
-	local inventorySubType = item:GetSubClass()
-	
-	if (class == 2 or class == 4) and not UNUSABLE_INVENTORY_TYPES[inventoryType] then
-		local displayID = item:GetItemTemplate():GetDisplayId()
-		local itemName = item:GetName()
-		local itemID = item:GetItemTemplate():GetItemId()
-		local locale = player:GetDbLocaleIndex()
-		itemName = itemName:gsub("'", "''")
-		
-		local hasTransmogQuery = AuthDBQuery("SELECT 1 FROM `account_transmog` WHERE `account_id` = " .. accountGUID .. " AND `unlocked_item_id` = " .. itemID .. " LIMIT 1;")
-		local isNewTransmog = (hasTransmogQuery == nil)
-		
-		AuthDBQuery("INSERT IGNORE INTO `account_transmog` (`account_id`, `unlocked_item_id`, `inventory_type`, `inventory_subtype`,`display_id`, `item_name`) VALUES (" .. accountGUID .. ", " .. itemID .. ", " .. inventoryType .. ", " .. inventorySubType .. ", " .. displayID .. ", '" .. itemName .. "');")
-		
-		if isNewTransmog then
-			TransmogrificationHandler.LootItemLocale(player, itemID, 1, locale)
-		end
-		
-		local constSlot = Transmog_CalculateSlot(slot)
-		
-		CharDBQuery("INSERT INTO character_transmog (`player_guid`, `slot`, `real_item`) VALUES (" .. playerGUID .. ", '" .. constSlot .. "', " .. itemID .. ") ON DUPLICATE KEY UPDATE real_item = VALUES(real_item);")
-		
-		local transmog = CharDBQuery("SELECT item FROM character_transmog WHERE player_guid = " .. playerGUID .. " AND slot = " .. constSlot .. " AND item IS NOT NULL;")
-		
-		if transmog == nil then
-			return;
-		end
-		
-		local transmogItem = transmog:GetUInt32(0)
-		local isPlayerInitDone = player:GetUInt32Value(147) -- Use unit padding
-		
-		if transmogItem == nil or (transmogItem == 0 and isPlayerInitDone ~= 1) then
-			return;
-		end
-		
-		player:SetUInt32Value(constSlot, transmogItem)
 	end
 end
 
