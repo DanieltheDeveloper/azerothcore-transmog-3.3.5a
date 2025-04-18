@@ -1,0 +1,19 @@
+## Interface: 30300
+## Title: Transmogrification
+## Notes: Adds the Transmogrification system to the Wrath of the Lich King client.
+## Author: DanielTheDeveloper
+## Version: 2.5.0
+## SavedVariables: TransmogrificationOptions, CollectedAppearances
+## OptionalDeps: Ace3
+## Deps: AIO_Client
+
+# Libraries
+embeds.xml
+
+# Locale
+Locale\enUS.lua
+
+# AddOn Functions
+transmogrification_options.lua
+transmogrification.lua
+transmogrification_frame.xml

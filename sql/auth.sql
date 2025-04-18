@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS `account_transmog` (
   `account_id` int unsigned NOT NULL,
   `unlocked_item_id` int unsigned NOT NULL,
   `inventory_type` int unsigned DEFAULT NULL,
+  `inventory_subtype` int unsigned DEFAULT NULL,
   `display_id` int unsigned NOT NULL,
   `item_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   UNIQUE KEY `account_item_id` (`account_id`,`unlocked_item_id`) USING BTREE,

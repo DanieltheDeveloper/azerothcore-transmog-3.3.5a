@@ -1,0 +1,558 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
+	<Script file="transmogrification_frame.lua"/>
+	<Button name="TransmogCharacterSlotRestoreButtonTemplate" virtual="true">
+		<Size x="16" y="16"/>
+		<Anchors>
+			<Anchor point="LEFT" x="37" y="9"/>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture file="Interface\AddOns\Transmogrification\assets\Transmog-Overlay-Restore">
+					<Size x="23" y="23"/>
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="HIGHLIGHT">
+				<Texture file="Interface\AddOns\Transmogrification\assets\Transmog-Overlay-Restore">
+					<Size x="23" y="23"/>
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+					<Color r="0" g="1" b="0" a="1"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnClick function="OnClickRestoreCurrentTransmogSlot"/>
+			<OnEnter function="RestoreItemToolTip"/>
+			<OnLeave function="OnLeaveHideToolTip"/>
+		</Scripts>
+	</Button>
+	<Button name="TransmogCharacterSlotHideButtonTemplate" virtual="true">
+		<Size x="16" y="16"/>
+		<Anchors>
+			<Anchor point="LEFT" x="37" y="-9"/>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture file="Interface\AddOns\Transmogrification\assets\Transmog-Overlay-Hide">
+					<Size x="21" y="21"/>
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="HIGHLIGHT">
+				<Texture file="Interface\AddOns\Transmogrification\assets\Transmog-Overlay-Hide">
+					<Size x="18" y="18"/>
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+					<Color r="1" g="1" b="1" a="1"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnClick function="OnClickHideCurrentTransmogSlot"/>
+			<OnEnter function="HideItemToolTip"/>
+			<OnLeave function="OnLeaveHideToolTip"/>
+		</Scripts>
+	</Button>
+	<Button name="TransmogItemSlotButtonTemplate" inherits="ItemButtonTemplate" virtual="true">
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture parentKey="ignoreTexture" file="Interface\PaperDollInfoFrame\UI-GearManager-LeaveItem-Transparent">
+					<Size x="40" y="40"/>
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="toastTexture" file="Interface\AddOns\Transmogrification\assets\Transmog-Overlay-Toast">
+					<Size x="64" y="64"/>
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button parentKey="restoreButton" inherits="TransmogCharacterSlotRestoreButtonTemplate"/>
+			<Button parentKey="hideButton" inherits="TransmogCharacterSlotHideButtonTemplate"/>
+		</Frames>
+        <Scripts>
+            <OnLoad>
+				TransmogItemSlotButton_OnLoad(self);
+			</OnLoad>
+			<OnShow>
+				PaperDollItemSlotButton_OnShow(self);
+			</OnShow>
+			<OnHide>
+				PaperDollItemSlotButton_OnHide(self);
+			</OnHide>
+            <OnEnter>
+				TransmogItemSlotButton_OnEnter(self, motion);
+			</OnEnter>
+            <OnLeave>
+				PaperDollItemSlotButton_OnLeave(self, motion);
+			</OnLeave>
+        </Scripts>
+    </Button>
+	<Button name="TransmogItemButtonTemplate" inherits="ItemButtonTemplate" virtual="true">
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture parentKey="toastTexture" file="Interface\AddOns\Transmogrification\assets\Transmog-Overlay-Toast">
+					<Size x="64" y="64"/>
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+    </Button>
+	<Frame name="TransmogItemWrapperTemplate" virtual="true">
+		<Size x="150" y="180"/>
+		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\AddOns\Transmogrification\assets\Transmog-Preview-Border" tile="true" alphaMode="BLEND">
+			<EdgeSize>
+				<AbsValue val="16"/>
+			</EdgeSize>
+			<TileSize>
+				<AbsValue val="32"/>
+			</TileSize>
+			<BackgroundInsets>
+				<AbsInset left="5" right="5" top="5" bottom="5"/>
+			</BackgroundInsets>
+			<Color r="0.7" g="1" b="0.7" a="1" /> 
+			<BorderColor r="0.64" g="0.50" b="0.41" a="1" />
+		</Backdrop>
+	</Frame>
+	<Button name="RestoreButtonTemplate" virtual="true">
+		<Size x="40" y="40"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture file="Interface\AddOns\Transmogrification\assets\Transmog-Overlay-Restore">
+					<Size x="32" y="32"/>
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="HIGHLIGHT">
+				<Texture file="Interface\AddOns\Transmogrification\assets\Transmog-Overlay-Restore">
+					<Size x="32" y="32"/>
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+					<Color r="0" g="1" b="0" a="1"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnEnter function="RestoreAllItemsToolTip"/>
+			<OnLeave function="OnLeaveHideToolTip"/>
+		</Scripts>
+	</Button>
+	<Button name="HideButtonTemplate" virtual="true">
+		<Size x="40" y="40"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture file="Interface\AddOns\Transmogrification\assets\Transmog-Overlay-Hide">
+					<Size x="30" y="30"/>
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="HIGHLIGHT">
+				<Texture file="Interface\AddOns\Transmogrification\assets\Transmog-Overlay-Hide">
+					<Size x="25" y="25"/>
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+					<Color r="1" g="1" b="1" a="1"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnEnter function="HideAllItemsToolTip"/>
+			<OnLeave function="OnLeaveHideToolTip"/>
+		</Scripts>
+	</Button>
+	<Frame name="TransmogrificationFrame" parent="UIParent" toplevel="true" setAllPoints="true" id="6" hidden="true" enableMouse="true" movable="true" frameStrata="DIALOG">
+		<Size x="1200" y="700"/>
+		<Anchors>
+			<Anchor point="CENTER" relativeTo="UIParent"/>
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentDialogBG" hWrapMode="false" vWrapMode="false" vertTile="false" horizTile="false" file="Interface\AddOns\Transmogrification\assets\Transmog-Frame">
+					<Size x="1200" y="700"/>
+					<TexCoords left="0" right="0.52" top="0" bottom="0.66">
+						<Rect ULx="" ULy="" LLx="" LLy="" URx="" URy="" LRx="" LRy="" />
+					</TexCoords>
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<FontString name="Title" parentKey="TitleText" inherits="GameFontNormalHuge">
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="207"/>
+					</Anchors>
+                </FontString>
+				<FontString name="Subtitle" parentKey="SubtitleText" inherits="GameFontNormal">
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="187"/>
+					</Anchors>
+					<Color r="0.7" g="0.7" b="0.7"/>
+				</FontString>
+				<FontString name="ShowCloakText" inherits="GameFontNormal">
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" x="145" y="60"/>
+					</Anchors>
+				</FontString>
+				<FontString name="ShowHelmText" inherits="GameFontNormal">
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" x="254" y="60"/>
+					</Anchors>
+				</FontString>
+				<FontString name="TransmogPaginationText" inherits="GameFontNormal">
+					<Anchors>
+						<Anchor point="BOTTOM" x="186" y="55"/>
+					</Anchors>
+                </FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name="TransmogCloseButton" inherits="UIPanelCloseButton" >
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-42" y="-84"/>
+				</Anchors>
+			</Button>
+			<DressUpModel name="TransmogrificationModelFrame">
+                <Size>
+                    <AbsDimension x="202" y="380"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset>
+                            <AbsDimension x="120" y="-240"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        Model_OnLoad(self);
+						self:RegisterEvent("DISPLAY_SIZE_CHANGED");
+                    </OnLoad>
+                </Scripts>
+				<Frames>
+					<Button name="TransmogrificationModelFrameRotateLeftButton">
+						<Size>
+							<AbsDimension x="35" y="35"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset>
+                            		<AbsDimension x="68" y="11"/>
+                        		</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnMouseDown>
+								self.isRotating = true;
+								self:SetScript("OnUpdate", function()
+									Model_RotateRight(TransmogrificationModelFrame);
+								end);
+							</OnMouseDown>
+							<OnMouseUp>
+								self.isRotating = false;
+								self:SetScript("OnUpdate", nil);
+							</OnMouseUp>
+							<OnHide>
+								self.isRotating = false;
+								self:SetScript("OnUpdate", nil);
+							</OnHide>
+						</Scripts>
+						<NormalTexture file="Interface\Buttons\UI-RotationLeft-Button-Up"/>
+						<PushedTexture file="Interface\Buttons\UI-RotationLeft-Button-Down"/>
+						<HighlightTexture file="Interface\Buttons\ButtonHilight-Round" alphaMode="ADD"/>
+					</Button>
+					<Button name="TransmogrificationModelFrameRotateRightButton">
+						<Size>
+							<AbsDimension x="35" y="35"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="TransmogrificationModelFrameRotateLeftButton" relativePoint="TOPRIGHT"/>
+						</Anchors>
+						<Scripts>
+							<OnMouseDown>
+								self.isRotating = true;
+								self:SetScript("OnUpdate", function()
+									Model_RotateLeft(TransmogrificationModelFrame);
+								end);
+							</OnMouseDown>
+							<OnMouseUp>
+								self.isRotating = false;
+								self:SetScript("OnUpdate", nil);
+							</OnMouseUp>
+							<OnHide>
+								self.isRotating = false;
+								self:SetScript("OnUpdate", nil);
+							</OnHide>
+						</Scripts>
+						<NormalTexture file="Interface\Buttons\UI-RotationRight-Button-Up"/>
+						<PushedTexture file="Interface\Buttons\UI-RotationRight-Button-Down"/>
+						<HighlightTexture file="Interface\Buttons\ButtonHilight-Round" alphaMode="ADD"/>
+					</Button>
+				</Frames>
+            </DressUpModel>
+			<Button name="TransmogCharacterHeadSlot" inherits="TransmogItemSlotButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="TransmogrificationModelFrame" x="-46" y="0"/>
+				</Anchors>
+				<Scripts>
+					<OnClick function="OnClickHeadTab"/>
+				</Scripts>
+            </Button>
+			<Button name="TransmogCharacterShoulderSlot" inherits="TransmogItemSlotButtonTemplate">
+				<Anchors>
+					<Anchor point="BOTTOM" relativeTo="TransmogCharacterHeadSlot" x="0" y="-54"/>
+				</Anchors>
+				<Scripts>
+					<OnClick function="OnClickShoulderTab"/>
+				</Scripts>
+            </Button>
+			<Button name="TransmogCharacterBackSlot" inherits="TransmogItemSlotButtonTemplate">
+				<Anchors>
+					<Anchor point="BOTTOM" relativeTo="TransmogCharacterShoulderSlot" x="0" y="-54"/>
+				</Anchors>
+				<Scripts>
+					<OnClick function="OnClickBackTab"/>
+				</Scripts>
+            </Button>
+			<Button name="TransmogCharacterChestSlot" inherits="TransmogItemSlotButtonTemplate">
+				<Anchors>
+					<Anchor point="BOTTOM" relativeTo="TransmogCharacterBackSlot" x="0" y="-54"/>
+				</Anchors>
+				<Scripts>
+					<OnClick function="OnClickChestTab"/>
+				</Scripts>
+            </Button>
+			<Button name="TransmogCharacterShirtSlot" inherits="TransmogItemSlotButtonTemplate">
+				<Anchors>
+					<Anchor point="BOTTOM" relativeTo="TransmogCharacterChestSlot" x="0" y="-54"/>
+				</Anchors>
+				<Scripts>
+					<OnClick function="OnClickShirtTab"/>
+				</Scripts>
+            </Button>
+			<Button name="TransmogCharacterTabardSlot" inherits="TransmogItemSlotButtonTemplate">
+				<Anchors>
+					<Anchor point="BOTTOM" relativeTo="TransmogCharacterShirtSlot" x="0" y="-54"/>
+				</Anchors>
+				<Scripts>
+					<OnClick function="OnClickTabardTab"/>
+				</Scripts>
+            </Button>
+			<Button name="TransmogCharacterWristSlot" inherits="TransmogItemSlotButtonTemplate">
+				<Anchors>
+					<Anchor point="BOTTOM" relativeTo="TransmogCharacterTabardSlot" x="0" y="-54"/>
+				</Anchors>
+				<Scripts>
+					<OnClick function="OnClickWristTab"/>
+				</Scripts>
+            </Button>
+			<Button name="TransmogCharacterHandsSlot" inherits="TransmogItemSlotButtonTemplate">
+				<Anchors>
+					<Anchor point="BOTTOM" relativeTo="TransmogCharacterHeadSlot" x="260" y="0"/>
+				</Anchors>
+				<Scripts>
+					<OnClick function="OnClickHandsTab"/>
+				</Scripts>
+            </Button>
+			<Button name="TransmogCharacterWaistSlot" inherits="TransmogItemSlotButtonTemplate">
+				<Anchors>
+					<Anchor point="BOTTOM" relativeTo="TransmogCharacterHandsSlot" x="0" y="-54"/>
+				</Anchors>
+				<Scripts>
+					<OnClick function="OnClickWaistTab"/>
+				</Scripts>
+            </Button>
+			<Button name="TransmogCharacterLegsSlot" inherits="TransmogItemSlotButtonTemplate">
+				<Anchors>
+					<Anchor point="BOTTOM" relativeTo="TransmogCharacterWaistSlot" x="0" y="-54"/>
+				</Anchors>
+				<Scripts>
+					<OnClick function="OnClickLegsTab"/>
+				</Scripts>
+            </Button>
+			<Button name="TransmogCharacterFeetSlot" inherits="TransmogItemSlotButtonTemplate">
+				<Anchors>
+					<Anchor point="BOTTOM" relativeTo="TransmogCharacterLegsSlot" x="0" y="-54"/>
+				</Anchors>
+				<Scripts>
+					<OnClick function="OnClickFeetTab"/>
+				</Scripts>
+            </Button>
+			<Button name="TransmogCharacterMainHandSlot" inherits="TransmogItemSlotButtonTemplate">
+				<Anchors>
+					<Anchor point="BOTTOM" relativeTo="TransmogCharacterFeetSlot" x="0" y="-54"/>
+				</Anchors>
+				<Scripts>
+					<OnClick function="OnClickMainTab"/>
+				</Scripts>
+            </Button>
+			<Button name="TransmogCharacterSecondaryHandSlot" inherits="TransmogItemSlotButtonTemplate">
+				<Anchors>
+					<Anchor point="BOTTOM" relativeTo="TransmogCharacterMainHandSlot" x="0" y="-54"/>
+				</Anchors>
+				<Scripts>
+					<OnClick function="OnClickOffTab"/>
+				</Scripts>
+            </Button>
+			<Button name="TransmogCharacterRangedSlot" inherits="TransmogItemSlotButtonTemplate">
+				<Anchors>
+					<Anchor point="BOTTOM" relativeTo="TransmogCharacterSecondaryHandSlot" x="0" y="-54"/>
+				</Anchors>
+				<Scripts>
+					<OnClick function="OnClickRangedTab"/>
+				</Scripts>
+            </Button>
+			<Button name="LeftButton">
+				<Size>
+					<AbsDimension x="32" y="32"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOM" x="135" y="45"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>self:Disable()</OnLoad>
+					<OnClick function="OnClickPrevPage"/>
+				</Scripts>
+				<NormalTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Down"/>
+				<DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Disabled"/>
+				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+			</Button>
+			<Button name="RightButton">
+				<Size>
+					<AbsDimension x="32" y="32"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOM" x="236" y="45"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>self:Disable()</OnLoad>
+					<OnClick function="OnClickNextPage"/>
+				</Scripts>
+				<NormalTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Down"/>
+				<DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Disabled"/>
+				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+			</Button>
+			<Frame name="TransmogWarningFrame">
+				<Size x="350" y="30"/>
+				<Anchors>
+					<Anchor point="CENTER" x="186" y="-80"/>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString name="TransmogWarningText" inherits="GameFontNormal">
+							<Anchors>
+								<Anchor point="CENTER" x="0" y="0"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
+			<Button name="SaveButton" inherits="ItemButtonTemplate">
+				<Anchors>
+					<Anchor point="BOTTOM" relativeTo="TransmogPaginationText" x="0" y="-60"/>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture name="SaveBackgroundTexture" file="Interface\TutorialFrame\TutorialFrameBackground">
+							<Size x="40" y="40"/>
+							<Anchors>
+								<Anchor point="CENTER" x="" y=""/>
+							</Anchors>
+						</Texture>
+					</Layer>
+					<Layer level="OVERLAY">
+						<Texture name="SaveTexture" file="Interface\AddOns\Transmogrification\assets\Transmog-Icon-Holder">
+							<Size x="192" y="96"/>
+							<Anchors>
+								<Anchor point="CENTER" x="-2" y=""/>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnEnter function="TransmogrificationToolTip"/>
+					<OnLeave function="OnLeaveHideToolTip"/>
+					<OnClick function="OnClickApplyAllowTransmogrifications"/>
+				</Scripts>
+			</Button>
+			<Button name="RestoreAllButton" inherits="RestoreButtonTemplate">
+				<Size x="22" y="22"/>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="TransmogCharacterWristSlot" x="84" y="-12"/>
+				</Anchors>
+				<Scripts>
+					<OnClick function="OnClickRestoreAllButton"/>
+				</Scripts>
+			</Button>
+			<Button name="HideAllButton" inherits="HideButtonTemplate">
+				<Size x="24" y="24"/>
+				<Anchors>
+					<Anchor point="RIGHT" relativeTo="TransmogCharacterRangedSlot" x="-82" y="-12"/>
+				</Anchors>
+				<Scripts>
+					<OnClick function="OnClickHideAllButton"/>
+				</Scripts>
+			</Button>
+			<EditBox name="ItemSearchInput" autoFocus="false" toplevel="true" enableMouse="true" letters="255" inherits="InputBoxTemplate">
+				<Size x="255" y="20"/>
+				<Anchors>
+					<Anchor point="CENTER" x="187" y="122"/>
+				</Anchors>
+				<Scripts>
+					<OnEscapePressed>self:ClearFocus();</OnEscapePressed>
+					<OnEnter function="EnterSearchInput"/>
+					<OnLeave function="LeaveSearchInput"/>
+					<OnMouseUp function="SetSearchInputFocus"/>
+				</Scripts>
+			</EditBox>
+			<CheckButton name="ShowCloakCheckBox" inherits="UICheckButtonTemplate">
+				<Size x="24" y="24"/>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="ShowCloakText" x="-24" y="0"/>
+				</Anchors>
+				<Scripts>
+					<OnEnter function="ShowCloakToolTip"/>
+					<OnLeave function="OnLeaveHideToolTip"/>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="ShowHelmCheckBox" inherits="UICheckButtonTemplate">
+				<Size x="24" y="24"/>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="ShowHelmText" x="-24" y="0"/>
+				</Anchors>
+				<Scripts>
+					<OnEnter function="ShowHelmToolTip"/>
+					<OnLeave function="OnLeaveHideToolTip"/>
+				</Scripts>
+			</CheckButton>
+		</Frames>
+		<Scripts>
+			<OnLoad function="OnTransmogrificationFrameLoad"/>
+			<OnHide function="OnHideTransmogrificationFrame"/>
+			<OnShow function="OnClickTransmogButton"/>
+			<OnDragStart>self:StartMoving();</OnDragStart>
+			<OnDragStop>self:StopMovingOrSizing();</OnDragStop>
+		</Scripts>
+	</Frame>
+</Ui>
