@@ -154,6 +154,10 @@ function TransmogrificationHandler.LootItemLocale(player, item, count, locale)
 	local class = itemTemplate:GetClass()
 
 	if (class == 2 or class == 4) and not UNUSABLE_INVENTORY_TYPES[inventoryType] then
+		local countQuery = AuthDBQuery("SELECT COUNT(*) FROM account_transmog WHERE account_id = " .. accountGUID .. " AND unlocked_item_id = " .. itemID .. ";")
+		local count = countQuery:GetUInt32(0)
+		local isNewTransmog = (count == 0)
+		
 		local displayID = itemTemplate:GetDisplayId()
 		local itemName = itemTemplate:GetName()
 		local locItemName = itemTemplate:GetName(locale)
@@ -162,25 +166,26 @@ function TransmogrificationHandler.LootItemLocale(player, item, count, locale)
 		itemName = itemName:gsub("'", "''")
 		AuthDBQuery("INSERT IGNORE INTO `account_transmog` (`account_id`, `unlocked_item_id`, `inventory_type`, `inventory_subtype`,`display_id`, `item_name`) VALUES (" .. accountGUID .. ", " .. itemID .. ", " .. inventoryType .. ", " .. inventorySubType .. ", " .. displayID .. ", '" .. itemName .. "');")
 		
-		if locItemName == nil then
-			locItemName = itemTemplate:GetName(0)
+		if isNewTransmog then
+			if locItemName == nil then
+				locItemName = itemTemplate:GetName(0)
+			end
+			
+			local qualityColors = {
+				[0] = "|cff9d9d9d", -- Poor
+				[1] = "|cffffffff", -- Common
+				[2] = "|cff1eff00", -- Uncommon
+				[3] = "|cff0070dd", -- Rare
+				[4] = "|cffa335ee", -- Epic
+				[5] = "|cffff8000", -- Legendary
+				[6] = "|cffe6cc80"  -- Heirloom
+			}
+			
+			local colorCode = qualityColors[itemQuality] or "|cffffffff" -- Default to white if quality not found
+			
+			local itemLink = "|Hitem:" .. itemID .. ":0:0:0:0:0:0:0:0|h" .. colorCode .. "[" .. locItemName .. "]|r|h|r"
+			player:SendBroadcastMessage(itemLink .. GetLocalizedMessage("LOOT_ITEM_LOCALE", locale))
 		end
-		
-		local qualityColors = {
-			[0] = "|cff9d9d9d", -- Poor (Gray)
-			[1] = "|cffffffff", -- Common (White)
-			[2] = "|cff1eff00", -- Uncommon (Green)
-			[3] = "|cff0070dd", -- Rare (Blue)
-			[4] = "|cffa335ee", -- Epic (Purple)
-			[5] = "|cffff8000", -- Legendary (Orange)
-			[6] = "|cffe6cc80", -- Artifact (Light Gold)
-			[7] = "|cffe6cc80"  -- Heirloom (Light Gold)
-		}
-		
-		local colorCode = qualityColors[itemQuality] or "|cffffffff" -- Default to white if quality not found
-		
-		local itemLink = "|Hitem:" .. itemID .. ":0:0:0:0:0:0:0:0|h" .. colorCode .. "[" .. locItemName .. "]|r|h|r"
-		player:SendBroadcastMessage(itemLink .. GetLocalizedMessage("LOOT_ITEM_LOCALE", locale))
 	end
 end
 
