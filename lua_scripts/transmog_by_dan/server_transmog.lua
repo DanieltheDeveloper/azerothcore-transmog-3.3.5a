@@ -159,14 +159,18 @@ function TransmogrificationHandler.LootItemLocale(player, item, count, locale)
 		local isNewTransmog = (count == 0)
 		
 		local displayID = itemTemplate:GetDisplayId()
-		local itemName = itemTemplate:GetName()
-		local locItemName = itemTemplate:GetName(locale)
-		local itemQuality = itemTemplate:GetQuality()
 		
-		itemName = itemName:gsub("'", "''")
-		AuthDBQuery("INSERT IGNORE INTO `account_transmog` (`account_id`, `unlocked_item_id`, `inventory_type`, `inventory_subtype`,`display_id`, `item_name`) VALUES (" .. accountGUID .. ", " .. itemID .. ", " .. inventoryType .. ", " .. inventorySubType .. ", " .. displayID .. ", '" .. itemName .. "');")
+		local displayExistsQuery = AuthDBQuery("SELECT COUNT(*) FROM account_transmog WHERE account_id = " .. accountGUID .. " AND display_id = " .. displayID .. ";")
+		local displayExists = displayExistsQuery:GetUInt32(0) > 0
 		
-		if isNewTransmog then
+		if isNewTransmog and not displayExists then
+			local itemName = itemTemplate:GetName()
+			local locItemName = itemTemplate:GetName(locale)
+			local itemQuality = itemTemplate:GetQuality()
+			
+			itemName = itemName:gsub("'", "''")
+			AuthDBQuery("INSERT IGNORE INTO `account_transmog` (`account_id`, `unlocked_item_id`, `inventory_type`, `inventory_subtype`,`display_id`, `item_name`) VALUES (" .. accountGUID .. ", " .. itemID .. ", " .. inventoryType .. ", " .. inventorySubType .. ", " .. displayID .. ", '" .. itemName .. "');")
+			
 			if locItemName == nil then
 				locItemName = itemTemplate:GetName(0)
 			end
