@@ -686,26 +686,20 @@ function TransmogrificationHandler.SendCollectedTransmogItemIDs(player)
 	local locale = player:GetDbLocaleIndex()
 	
 	-- Query to retrieve collected transmog item IDs
-	local collectedAppearancesQuery = "SELECT unlocked_item_id, display_id FROM account_transmog WHERE account_id = " .. accountGUID .. ";"
+	local collectedAppearancesQuery = "SELECT unlocked_item_id FROM account_transmog WHERE account_id = " .. accountGUID .. ";"
 	local transmogs = AuthDBQuery(collectedAppearancesQuery)
 	
 	-- Collect the item IDs into a table
-	local collectedItemIDs = {}
-	local collectedDisplayIDs = {}
-	
+	local collectedAppearances = {}
 	for i = 1, transmogs:GetRowCount() do
 		local currentRow = transmogs:GetRow()
 		local itemID = currentRow["unlocked_item_id"]
-		local displayID = currentRow["display_id"]
-		
-		table.insert(collectedItemIDs, itemID)
-		table.insert(collectedDisplayIDs, displayID)
-		
+		table.insert(collectedAppearances, itemID)
 		transmogs:NextRow()
 	end
 	
 	-- Send the collected transmogs to the client
-	AIO.Handle(player, "TransmogrificationServer", "ReceiveCollectedAppearances", collectedItemIDs, collectedDisplayIDs)
+	AIO.Handle(player, "TransmogrificationServer", "ReceiveCollectedAppearances", collectedAppearances)
 end
 
 RegisterPlayerEvent(1, Transmog_OnCharacterCreate)
