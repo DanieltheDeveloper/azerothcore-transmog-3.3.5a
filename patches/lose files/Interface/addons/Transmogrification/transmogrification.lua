@@ -104,9 +104,9 @@ function Transmogrification:HandleSlashCommand(input)
 		InterfaceOptionsFrame_OpenToCategory(addonName)
 	-- Sync collected appearances from the server to the CollectedAppearances table and send the reload prompt when finished if the command argument is "sync".
 	elseif input:trim() == "sync" then
+		DEFAULT_CHAT_FRAME:AddMessage("|cffffff00" .. L["Querying the server for collected transmogrification appearances..."] .. "\n")
 		ChatFrame1EditBox:SetText(".transmog sync")
 		ChatEdit_SendText(ChatFrame1EditBox, 1)
-		Transmogrification:DisplayReloadPrompt()
 	else
 		if TransmogrificationFrame and TransmogrificationFrame:IsShown() then
 			TransmogrificationFrame:Hide()
