@@ -681,25 +681,81 @@ function TransmogrificationHandler.SetEquipmentTransmogInfo(player, slot, curren
 	end
 end
 
+function TransmogrificationHandler.GetItemsWithSameAppearance(player, itemID)
+	-- Query the server for the display ID of the new item
+	local displayIDQuery = "SELECT displayid FROM item_template WHERE entry = " .. itemID .. ";"
+	local displayIDResult = WorldDBQuery(displayIDQuery)
+	
+	if not displayIDResult then
+		return
+	end
+	
+	local displayID = displayIDResult:GetUInt32(0)
+	
+	-- Find all items with the same display ID
+	local matchingItemsQuery = "SELECT entry FROM item_template WHERE displayid = " .. displayID .. ";"
+	local matchingItemsResult = WorldDBQuery(matchingItemsQuery)
+	
+	if not matchingItemsResult then
+		return
+	end
+	
+	-- Collect the matching item IDs into a table
+	local matchingItems = {}
+	for i = 1, matchingItemsResult:GetRowCount() do
+		local currentRow = matchingItemsResult:GetRow()
+		local matchingItemID = currentRow["entry"]
+		table.insert(matchingItems, matchingItemID)
+		matchingItemsResult:NextRow()
+	end
+	
+	-- Send the matching transmogs to the client
+	AIO.Handle(player, "TransmogrificationServer", "ReceiveMatchingAppearances", itemID, matchingItems)
+end
+
 function TransmogrificationHandler.SendCollectedTransmogItemIDs(player)
 	local accountGUID = player:GetAccountId()
-	local locale = player:GetDbLocaleIndex()
 	
-	-- Query to retrieve collected transmog item IDs
-	local collectedAppearancesQuery = "SELECT unlocked_item_id FROM account_transmog WHERE account_id = " .. accountGUID .. ";"
-	local transmogs = AuthDBQuery(collectedAppearancesQuery)
+	-- Query to retrieve collected transmog display IDs
+	local collectedDisplayIDsQuery = "SELECT DISTINCT display_id FROM account_transmog WHERE account_id = " .. accountGUID .. ";"
+	local displayIDsResult = AuthDBQuery(collectedDisplayIDsQuery)
 	
-	-- Collect the item IDs into a table
+	if not displayIDsResult then
+		AIO.Handle(player, "TransmogrificationServer", "ReceiveCollectedAppearances", {}, 0)
+		return
+	end
+	
+	-- Count the unique appearances.
+	local uniqueAppearancesCount = displayIDsResult:GetRowCount()
+	
+	-- Collect the display IDs into a table
+	local collectedDisplayIDs = {}
+	for i = 1, displayIDsResult:GetRowCount() do
+		local currentRow = displayIDsResult:GetRow()
+		local displayID = currentRow["display_id"]
+		table.insert(collectedDisplayIDs, displayID)
+		displayIDsResult:NextRow()
+	end
+	
 	local collectedAppearances = {}
-	for i = 1, transmogs:GetRowCount() do
-		local currentRow = transmogs:GetRow()
-		local itemID = currentRow["unlocked_item_id"]
-		table.insert(collectedAppearances, itemID)
-		transmogs:NextRow()
+	
+	-- For each display ID, find all items that share the appearance
+	for _, displayID in ipairs(collectedDisplayIDs) do
+		local itemsWithDisplayQuery = "SELECT entry FROM item_template WHERE displayid = " .. displayID .. ";"
+		local itemsResult = WorldDBQuery(itemsWithDisplayQuery)
+		
+		if itemsResult then
+			for j = 1, itemsResult:GetRowCount() do
+				local itemRow = itemsResult:GetRow()
+				local itemID = itemRow["entry"]
+				table.insert(collectedAppearances, itemID)
+				itemsResult:NextRow()
+			end
+		end
 	end
 	
 	-- Send the collected transmogs to the client
-	AIO.Handle(player, "TransmogrificationServer", "ReceiveCollectedAppearances", collectedAppearances)
+	AIO.Handle(player, "TransmogrificationServer", "ReceiveCollectedAppearances", collectedAppearances, uniqueAppearancesCount)
 end
 
 RegisterPlayerEvent(1, Transmog_OnCharacterCreate)
