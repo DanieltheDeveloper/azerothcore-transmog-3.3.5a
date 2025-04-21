@@ -325,18 +325,16 @@ function TransmogrificationHandler.SetTransmogItemIDClient(player, slot, id, rea
 end
 
 -- Receives and saves a local list of collected transmogrification appearances, useful for displaying the "New Appearance" tooltip line.
-function TransmogrificationHandler.ReceiveCollectedAppearances(player, collectedAppearances)
+function TransmogrificationHandler.ReceiveCollectedAppearances(player, collectedAppearances, uniqueAppearancesCount)
 	-- Clear the collected transmogrification appearances table.
 	wipe(CollectedAppearances)
 
-	DEFAULT_CHAT_FRAME:AddMessage("|cffffff00" .. L["Querying the server for collected transmogrification appearances..."] .. "\n")
-
 	-- Save received collected transmogrification appearances to a local table.
-	local collectedAppearancesCount = 0
 	for i, itemID in ipairs(collectedAppearances) do
 		table.insert(CollectedAppearances, itemID)
-		collectedAppearancesCount = collectedAppearancesCount + 1
 	end
+	
+	local collectedAppearancesCount = uniqueAppearancesCount or 0
 
 	if collectedAppearancesCount == 0 then
 		DEFAULT_CHAT_FRAME:AddMessage("|cffffff00" .. L["No transmogrification appearances could be located for this account. If you believe this is an error, please contact a Game Master."])
@@ -344,12 +342,32 @@ function TransmogrificationHandler.ReceiveCollectedAppearances(player, collected
 		DEFAULT_CHAT_FRAME:AddMessage("|cffffff00" .. L["Your transmogrification appearance collection has been successfully synchronized!"] .. "\n")
 		DEFAULT_CHAT_FRAME:AddMessage("|cffffff00" .. L["You have collected "] .. "|cff" .. L["f194f7"] .. tostring(collectedAppearancesCount) .. "|cffffff00" .. L[" transmogrification appearances."] .. "\n")
 		DEFAULT_CHAT_FRAME:AddMessage("|cffffff00" .. L["It is recommended that you "] .. "|cff" .. L["00ccff"] .. L["/reload"] .. "|cffffff00" .. L[" your interface to finalize any changes, otherwise the "] .. "|cff" .. L["f194f7"] .. L["New Appearance"] .. "|cffffff00" .. L[" tooltip line may not function correctly."])
+		Transmogrification:DisplayReloadPrompt()
 	end
 end
 
 -- Add new appearances to the local item list when receiving the new appearance system message.
 -- We utilize the system message to naturally respect the server options in regards to when a new appearance should be added to the players collection.
 -- That being said, this function will break if the system message string does not match the string in `server_transmog.lua`.
+TransmogrificationHandler.ReceiveMatchingAppearances = function(player, originalItemID, matchingItems)
+	-- Add all matching items to our local list
+	for _, itemID in ipairs(matchingItems) do
+		-- Check if already collected
+		local alreadyCollected = false
+		for _, id in ipairs(CollectedAppearances) do
+			if id == itemID then
+				alreadyCollected = true
+				break
+			end
+		end
+		
+		-- If not already in the list, add it
+		if not alreadyCollected then
+			table.insert(CollectedAppearances, itemID)
+		end
+	end
+end
+
 local function AddNewAppearanceToLocalList()
 	local chatMonitor = CreateFrame("Frame")
 	chatMonitor:RegisterEvent("CHAT_MSG_SYSTEM")
@@ -377,6 +395,8 @@ local function AddNewAppearanceToLocalList()
 					if not alreadyCollected then
 						table.insert(CollectedAppearances, itemID)
 					end
+					
+					AIO.Handle("TransmogrificationServer", "GetItemsWithSameAppearance", itemID)
 				end
 			end
 		end
