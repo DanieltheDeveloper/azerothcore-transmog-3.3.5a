@@ -18,14 +18,9 @@ Transmog system created with AIO and Eluna for AzerothCore.
 
 For help read the mod-eluna documentation for AzerothCore [here](https://github.com/azerothcore/mod-eluna)
 
-## Know Bugs: Currently under development
-
-- Equipment icons are not reliable be wrong, grey or display no item (May already be fixed!)
-
 ## WIP
 
 - Spam prevention (click events)
-- Display small info text on items if you have previously obtained the transmog/display id
 - Search with display id
 - Weapon auras
 - Spells/Character effects
@@ -40,4 +35,3 @@ For help read the mod-eluna documentation for AzerothCore [here](https://github.
 
 - Blizzard, Battle.net, World of Warcraft, and all associated logos and designs are trademarks or registered trademarks of Blizzard Entertainment.
 - All other trademarks are the property of their respective owners. This project is not affiliated with Blizzard Entertainment or any of their family of sites.
-
