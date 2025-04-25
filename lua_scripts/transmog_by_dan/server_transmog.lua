@@ -193,10 +193,46 @@ function TransmogrificationHandler.LootItemLocale(player, item, count, locale)
 	end
 end
 
+function GetDisplaySlotForEquipmentSlot(equipSlot)
+	local slotMapping = {
+		[0] = PLAYER_VISIBLE_ITEM_1_ENTRYID,    -- Head
+		[2] = PLAYER_VISIBLE_ITEM_3_ENTRYID,    -- Shoulders
+		[3] = PLAYER_VISIBLE_ITEM_4_ENTRYID,    -- Shirt
+		[4] = PLAYER_VISIBLE_ITEM_5_ENTRYID,    -- Chest
+		[5] = PLAYER_VISIBLE_ITEM_6_ENTRYID,    -- Waist
+		[6] = PLAYER_VISIBLE_ITEM_7_ENTRYID,    -- Legs
+		[7] = PLAYER_VISIBLE_ITEM_8_ENTRYID,    -- Feet
+		[8] = PLAYER_VISIBLE_ITEM_9_ENTRYID,    -- Wrists
+		[9] = PLAYER_VISIBLE_ITEM_10_ENTRYID,   -- Hands
+		[14] = PLAYER_VISIBLE_ITEM_15_ENTRYID,  -- Back
+		[15] = PLAYER_VISIBLE_ITEM_16_ENTRYID,  -- Main Hand
+		[16] = PLAYER_VISIBLE_ITEM_17_ENTRYID,  -- Off Hand
+		[17] = PLAYER_VISIBLE_ITEM_18_ENTRYID,  -- Ranged
+		[18] = PLAYER_VISIBLE_ITEM_19_ENTRYID   -- Tabard
+	}
+	
+	return slotMapping[equipSlot]
+end
+
 function Transmog_OnEquipItem(event, player, item, bag, slot)
 	local itemID = item:GetItemTemplate():GetItemId()
 	local locale = player:GetDbLocaleIndex()
-	TransmogrificationHandler.LootItemLocale(player, itemID, 1, locale)
+	
+	if ADD_NEWLY_EQUIPPED_ITEMS_TO_THE_TRANSMOG_LIST then
+		TransmogrificationHandler.LootItemLocale(player, itemID, 1, locale)
+	end
+	
+	local class = item:GetItemTemplate():GetClass()
+	local inventoryType = item:GetItemTemplate():GetInventoryType()
+	
+	if (class == 2 or class == 4) and not UNUSABLE_INVENTORY_TYPES[inventoryType] then
+		local playerGUID = player:GetGUIDLow()
+		local displaySlot = GetDisplaySlotForEquipmentSlot(slot)
+		
+		if displaySlot then
+			CharDBQuery("UPDATE character_transmog SET real_item = " .. itemID .. " WHERE player_guid = " .. playerGUID .. " AND slot = " .. displaySlot)
+		end
+	end
 end
 
 function Transmog_OnLootItem(event, player, item, count)
@@ -761,9 +797,7 @@ end
 RegisterPlayerEvent(1, Transmog_OnCharacterCreate)
 RegisterPlayerEvent(2, Transmog_OnCharacterDelete)
 
-if ADD_NEWLY_EQUIPPED_ITEMS_TO_THE_TRANSMOG_LIST then
-	RegisterPlayerEvent(29, Transmog_OnEquipItem)
-end
+RegisterPlayerEvent(29, Transmog_OnEquipItem)
 
 RegisterPlayerEvent(30, function(event, player, bag, slot) 
     if bag == 255 then
