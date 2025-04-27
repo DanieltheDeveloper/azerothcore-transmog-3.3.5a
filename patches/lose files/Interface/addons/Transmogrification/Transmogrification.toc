@@ -2,7 +2,7 @@
 ## Title: Transmogrification
 ## Notes: Adds the Transmogrification system to the Wrath of the Lich King client.
 ## Author: DanielTheDeveloper
-## Version: 2.5.0
+## Version: 2.5.2
 ## SavedVariables: TransmogrificationOptions, CollectedAppearances
 ## OptionalDeps: Ace3
 ## Deps: AIO_Client
