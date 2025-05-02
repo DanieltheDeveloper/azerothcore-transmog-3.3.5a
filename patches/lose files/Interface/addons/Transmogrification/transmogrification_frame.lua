@@ -103,6 +103,7 @@ local equipmentSlotIcons = {
 -- Define Transmogrification frame variables.
 local itemButtons = {}
 local isInputHovered = false
+local isTooltipHooked = false
 local CurrentItemSlot = PLAYER_VISIBLE_ITEM_1_ENTRYID
 local currentPage = 1
 local currentSlotTooltip = nil
@@ -619,6 +620,8 @@ local function HookItemTooltip()
 	local settings = Transmogrification:GetSettings()
 	if not settings.displayNewAppearanceTooltip then return end
 
+	if isTooltipHooked then return end
+
 	local originalSetItem = GameTooltip:GetScript("OnTooltipSetItem")
 
 	GameTooltip:SetScript("OnTooltipSetItem", function(self, ...)
@@ -645,6 +648,8 @@ local function HookItemTooltip()
 			self:AddLine("|cff" .. L["f194f7"] .. L["New Appearance"])
 		end
 	end)
+	
+	isTooltipHooked = true
 end
 
 function OnLeaveHideToolTip(btn)
@@ -688,10 +693,10 @@ AIO.AddSavedVarChar("originalTransmogrificationIDs")
 local function OnEventEnterWorldReloadTransmogIDs(self, event)
 	if ( event == "PLAYER_ENTERING_WORLD") then
 		AIO.Handle("TransmogrificationServer", "SetTransmogItemIDs")
-		HookItemTooltip()
 		if CollectedAppearances == nil then
 			CollectedAppearances = {}
 		end
+		HookItemTooltip()
 		AddNewAppearanceToLocalList()
 	else
 		AIO.Handle("TransmogrificationServer", "OnUnequipItem")
