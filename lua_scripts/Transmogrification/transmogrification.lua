@@ -136,6 +136,15 @@ function Transmog_OnCharacterDelete(event, guid)
 	CharDBQuery("DELETE FROM character_transmog WHERE player_guid = " .. guid .. "")
 end
 
+function Transmog_OnCharacterLogin(event, player)
+	local playerGUID = player:GetGUIDLow()
+	local playerExistsQuery = CharDBQuery("SELECT COUNT(*) FROM character_transmog WHERE player_guid = " .. playerGUID .. ";")
+	local playerExists = playerExistsQuery:GetUInt32(0) > 0
+	if not playerExists then
+		Transmog_OnCharacterCreate(event, player)
+	end
+end
+
 function TransmogrificationHandler.LootItemLocale(player, item, count, locale)
 	local accountGUID = player:GetAccountId()
 	local itemID
@@ -796,6 +805,7 @@ end
 
 RegisterPlayerEvent(1, Transmog_OnCharacterCreate)
 RegisterPlayerEvent(2, Transmog_OnCharacterDelete)
+RegisterPlayerEvent(3, Transmog_OnCharacterLogin)
 
 RegisterPlayerEvent(29, Transmog_OnEquipItem)
 
