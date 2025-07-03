@@ -9,7 +9,7 @@ This project brings a fully functional Transmog system to AzerothCore servers, c
 Want to support the development of this and other projects?  
 👉 Visit my [Patreon page](https://patreon.com/danielthedeveloper) — every bit helps!
 
-## 📥 Installation
+## 📤 Installation (Server)
 
 1. Ensure you have both [AIO](https://github.com/Rochet2/AIO) and [mod-eluna](https://github.com/azerothcore/mod-eluna) installed on your AzerothCore server.
 2. Copy the contents of the `lua_scripts` folder into your Eluna/AIO Lua scripts directory.
@@ -18,6 +18,10 @@ Want to support the development of this and other projects?
 5. Start your server — and enjoy your new Transmog system!
 
 📚 For more help, check out the [mod-eluna documentation](https://github.com/azerothcore/mod-eluna).
+
+## 📥 Installation (Client)
+
+1. Ensure you have both the [AIO](https://github.com/Rochet2/AIO) and [Transmogrify](https://github.com/DanieltheDeveloper/azerothcore-transmog-3.3.5a/tree/master/patches/lose%20files/Interface/addons) client-side AddOns installed to the AddOns folder of your World of Warcraft installation.
 
 ## 🚧 Work in Progress (WIP)
 
