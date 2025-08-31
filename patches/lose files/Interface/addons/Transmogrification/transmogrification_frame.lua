@@ -307,7 +307,13 @@ function TransmogrificationHandler.SetTransmogItemIDClient(player, slot, id, rea
 		local currentTransmogID = currentTransmogrificationIDs[part]
 		local originalTransmogID = originalTransmogrificationIDs[part]
 
-		if (id ~= 0 and id ~= nil and (currentTransmogID == nil or currentTransmogID == 0) and realItemID ~= id) then
+		if (id == 0) then
+			-- Скрытие слота - устанавливаем ID в 0
+			currentTransmogrificationIDs[part] = 0
+			originalTransmogrificationIDs[part] = 0
+			-- Убираем предмет с модели
+			TransmogrificationModelFrame:Undress()
+		elseif (id ~= 0 and id ~= nil and (currentTransmogID == nil or currentTransmogID == 0) and realItemID ~= id) then
 			currentTransmogrificationIDs[part] = id
 			originalTransmogrificationIDs[part] = id
 			TransmogrificationModelFrame:TryOn(id)
@@ -432,6 +438,9 @@ function LoadTransmogrificationsFromCurrentIDs(useTransmogrificationPreview)
 			if itemID then
 				TransmogrificationModelFrame:TryOn(itemID)
 			end
+		-- If the item has been hidden (transmogrificationID == 0), don't display anything
+		elseif transmogrificationID == 0 then
+			-- Слот скрыт, ничего не показываем
 		end
 	end
 
@@ -791,12 +800,12 @@ function OnClickApplyAllowTransmogrifications(btn)
 		local equipSlot = GetEquipmentSlot(entryID)
 		local hasItem = equipSlot and GetInventoryItemID("player", equipSlot) ~= nil
 
-		-- Only apply transmogrifications if there is an item in the equipment slot.
-		if hasItem and transmogID ~= currentTransmogrificationIDs[slotName] then
-			AIO.Handle("TransmogrificationServer", "EquipTransmogItem", transmogID, entryID)
-			currentTransmogrificationIDs[slotName] = transmogID
-			originalTransmogrificationIDs[slotName] = transmogID
-		end
+			-- Only apply transmogrifications if there is an item in the equipment slot.
+	if hasItem and (transmogID ~= currentTransmogrificationIDs[slotName] or (transmogID == 0 and currentTransmogrificationIDs[slotName] ~= 0)) then
+		AIO.Handle("TransmogrificationServer", "EquipTransmogItem", transmogID, entryID)
+		currentTransmogrificationIDs[slotName] = transmogID
+		originalTransmogrificationIDs[slotName] = transmogID
+	end
 	end
 
 	-- Refresh the transmogrification preview with new information from the server.

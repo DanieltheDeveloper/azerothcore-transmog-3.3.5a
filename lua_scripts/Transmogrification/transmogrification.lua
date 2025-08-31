@@ -1,5 +1,10 @@
 -- ╔════════════════════════════════════════════════════════════════════════╗
 -- ║           Transmog System Eluna Script by DanielTheDeveloper           ║
+-- ║                                                                        ║
+-- ║ MODIFIED: Weapon subtype restrictions removed - now any weapon type   ║
+-- ║ can be transmogged to any other weapon type within the same inventory ║
+-- ║ type (e.g., dagger → axe, sword → mace, but still one-handed ↔ one-  ║
+-- ║ handed, two-handed ↔ two-handed, ranged ↔ ranged).                   ║
 -- ╚════════════════════════════════════════════════════════════════════════╝
 --
 --                        ╔══════════════════════════╗
@@ -45,19 +50,25 @@
 -- ║ It is recommended to leave this option enabled as it leaves the        ║
 -- ║ class fantasy intact.                                                  ║
 -- ╟────────────────────────────────────────────────────────────────────────╢
-      local RESTRICT_ARMOR_TRANSMOG_TO_SIMILAR_MATERIALS = true           --║
+      local RESTRICT_ARMOR_TRANSMOG_TO_SIMILAR_MATERIALS = false          --║
 -- ╟────────────────────────────────────────────────────────────────────────╢
 -- ║                                                                        ║
--- ║ Restricts weapon transmog appearances to the same weapon. As an        ║
--- ║ example, with this option enabled, two-handed swords can only be       ║
--- ║ transmogrified to appear as other two-handed swords. When this option  ║
--- ║ is disabled, two-handed swords can be transmogrified to appear as a    ║
--- ║ one-handed sword, staff, polearm, fishing pole, etc.                   ║
+-- ║ Restricts weapon transmog appearances to the same weapon type. As an   ║
+-- ║ example, with this option enabled, two-handed weapons can only be      ║
+-- ║ transmogrified to appear as other two-handed weapons (swords, axes,    ║
+-- ║ maces, etc.), but not to one-handed weapons. When this option is      ║
+-- ║ disabled, any weapon can be transmogrified to any other weapon of the  ║
+-- ║ same inventory type (one-handed to one-handed, two-handed to two-      ║
+-- ║ handed, ranged to ranged).                                            ║
 -- ║                                                                        ║
--- ║ It is recommended to leave this option enabled as it leaves the        ║
--- ║ class fantasy intact.                                                  ║
+-- ║ NOTE: This option is now DISABLED by default. Weapons can be           ║
+-- ║ transmogged between different subtypes (sword → axe, dagger → mace)    ║
+-- ║ but still maintain inventory type restrictions (one-handed ↔ one-     ║
+-- ║ handed, two-handed ↔ two-handed, ranged ↔ ranged).                    ║
+-- ║                                                                        ║
+-- ║ It is recommended to leave this option disabled for more flexibility. ║
 -- ╟────────────────────────────────────────────────────────────────────────╢
-      local RESTRICT_WEAPON_TRANSMOG_TO_SIMILAR_WEAPONS = true            --║
+      local RESTRICT_WEAPON_TRANSMOG_TO_SIMILAR_WEAPONS = false           --║
 -- ╚════════════════════════════════════════════════════════════════════════╝
 
 local AIO = AIO or require("AIO")
@@ -81,11 +92,12 @@ local PLAYER_VISIBLE_ITEM_18_ENTRYID = 317 -- Ranged
 local PLAYER_VISIBLE_ITEM_19_ENTRYID = 319 -- Tabard
 local UNUSABLE_INVENTORY_TYPES = {[2] = true, [11] = true, [12] = true, [18] = true, [24] = true, [27] = true, [28] = true}
 
--- TODO: Add further language support.
+-- TODO: Add further language support (currently supports: enUS/enGB, deDE, ruRU)
 local localeMessages = {
 	LOOT_ITEM_LOCALE = {
 		[0] = " has been added to your appearance collection.", -- enUS/enGB
 		[3] = " wurde deiner Transmog-Sammlung hinzugefügt.", -- deDE
+		[8] = " добавлен в вашу коллекцию обликов.", -- ruRU
 	}
 }
 
@@ -230,7 +242,8 @@ function Transmog_OnEquipItem(event, player, item, bag, slot)
 		local displaySlot = GetDisplaySlotForEquipmentSlot(slot)
 		
 		if displaySlot then
-			CharDBQuery("UPDATE character_transmog SET real_item = " .. itemID .. " WHERE player_guid = " .. playerGUID .. " AND slot = " .. displaySlot)
+			-- Создаем или обновляем запись в базе данных
+			CharDBQuery("INSERT INTO character_transmog (`player_guid`, `slot`, `real_item`) VALUES (" .. playerGUID .. ", " .. displaySlot .. ", " .. itemID .. ") ON DUPLICATE KEY UPDATE real_item = VALUES(real_item);")
 		end
 	end
 end
@@ -328,7 +341,9 @@ end
 function Transmog_Load(player)
 	local playerGUID = player:GetGUIDLow()
 	
-	local transmogs = CharDBQuery("SELECT item, slot FROM character_transmog WHERE player_guid = "..playerGUID..";")
+
+	
+	local transmogs = CharDBQuery("SELECT item, slot, real_item FROM character_transmog WHERE player_guid = "..playerGUID..";")
 	if (transmogs == nil) then
 		return;
 	end
@@ -337,8 +352,21 @@ function Transmog_Load(player)
 		local currentRow = transmogs:GetRow()
 		local slot = currentRow["slot"]
 		local item = currentRow["item"]
-		if (item ~= nil and item ~= '') then
+		local real_item = currentRow["real_item"]
+		
+		-- Применяем трансмогрификацию к персонажу
+		if (item ~= nil and item ~= '' and item ~= 0) then
+			-- Обычный трансмог - применяем item
 			player:SetUInt32Value(tonumber(slot), item)
+		elseif (item == 0) then
+			-- Скрытый слот - устанавливаем визуал в 0
+			player:SetUInt32Value(tonumber(slot), 0)
+		elseif (real_item ~= nil and real_item ~= '' and real_item ~= 0) then
+			-- Если нет трансмога, но есть real_item - показываем оригинальный предмет
+			player:SetUInt32Value(tonumber(slot), real_item)
+		else
+			-- Если нет трансмогрификации, устанавливаем значение слота в 0
+			player:SetUInt32Value(tonumber(slot), 0)
 		end
 		transmogs:NextRow()
 	end
@@ -346,7 +374,7 @@ end
 
 function Transmog_OnLogin(event, player)
 	-- Apply transmog on login
-	-- Transmog_Load(player)
+	Transmog_Load(player)
 	--local item = player:GetEquippedItemBySlot(4)
 	--print(item:GetName())
 end
@@ -359,24 +387,45 @@ end
 function TransmogrificationHandler.EquipTransmogItem(player, item, slot)
 	local playerGUID = player:GetGUIDLow()
 	
-	if item == nil and item ~= 0 then
+
+	
+	if item == nil or item == 0 then
+		-- Скрытие слота (item = 0) - устанавливаем визуал в 0
 		local oldItem = CharDBQuery("SELECT real_item FROM character_transmog WHERE player_guid = "..playerGUID.." AND slot = "..slot..";")
 		local oldItemID = oldItem:GetUInt32(0)
+		
 		if oldItemID == nil or oldItemID == 0 then
-			CharDBQuery("INSERT INTO character_transmog (`player_guid`, `slot`, `item`) VALUES ("..playerGUID..", '"..slot.."', NULL) ON DUPLICATE KEY UPDATE item = VALUES(item);")
-			player:SetUInt32Value(tonumber(slot), 0)
-			return
+			-- Если нет real_item, нужно получить текущий экипированный предмет
+			local equipmentSlot = GetEquipmentSlot(slot)
+			local currentItem = player:GetEquippedItemBySlot(equipmentSlot)
+			if currentItem then
+				local currentItemID = currentItem:GetItemTemplate():GetItemId()
+				CharDBQuery("INSERT INTO character_transmog (`player_guid`, `slot`, `item`, `real_item`) VALUES ("..playerGUID..", '"..slot.."', 0, "..currentItemID..") ON DUPLICATE KEY UPDATE item = VALUES(item), real_item = VALUES(real_item);")
+			else
+				CharDBQuery("INSERT INTO character_transmog (`player_guid`, `slot`, `item`) VALUES ("..playerGUID..", '"..slot.."', 0) ON DUPLICATE KEY UPDATE item = VALUES(item);")
+			end
+		else
+			CharDBQuery("INSERT INTO character_transmog (`player_guid`, `slot`, `item`, `real_item`) VALUES ("..playerGUID..", '"..slot.."', 0, "..oldItemID..") ON DUPLICATE KEY UPDATE item = VALUES(item), real_item = VALUES(real_item);")
 		end
-
-		CharDBQuery("INSERT INTO character_transmog (`player_guid`, `slot`, `item`, `real_item`) VALUES ("..playerGUID..", '"..slot.."', NULL, "..oldItemID..") ON DUPLICATE KEY UPDATE item = VALUES(item), real_item = VALUES(real_item);")
-		player:SetUInt32Value(tonumber(slot), oldItemID)
+		
+		-- Устанавливаем визуал слота в 0 (скрываем)
+		player:SetUInt32Value(tonumber(slot), 0)
 		return
 	end
+	
 	
 	local oldItem = CharDBQuery("SELECT real_item FROM character_transmog WHERE player_guid = "..playerGUID.." AND slot = "..slot..";")
 	local oldItemID = oldItem:GetUInt32(0)
 	if oldItemID == nil or oldItemID == 0 then
-		CharDBQuery("INSERT INTO character_transmog (`player_guid`, `slot`, `item`) VALUES ("..playerGUID..", '"..slot.."', "..item..") ON DUPLICATE KEY UPDATE item = VALUES(item);")
+		-- Если это первый раз, нужно получить текущий экипированный предмет
+		local equipmentSlot = GetEquipmentSlot(slot)
+		local currentItem = player:GetEquippedItemBySlot(equipmentSlot)
+		if currentItem then
+			local currentItemID = currentItem:GetItemTemplate():GetItemId()
+			CharDBQuery("INSERT INTO character_transmog (`player_guid`, `slot`, `item`, `real_item`) VALUES ("..playerGUID..", '"..slot.."', "..item..", "..currentItemID..") ON DUPLICATE KEY UPDATE item = VALUES(item), real_item = VALUES(real_item);")
+		else
+			CharDBQuery("INSERT INTO character_transmog (`player_guid`, `slot`, `item`) VALUES ("..playerGUID..", '"..slot.."', "..item..") ON DUPLICATE KEY UPDATE item = VALUES(item);")
+		end
 	else
 		CharDBQuery("INSERT INTO character_transmog (`player_guid`, `slot`, `item`, `real_item`) VALUES ("..playerGUID..", '"..slot.."', "..item..", "..oldItemID..") ON DUPLICATE KEY UPDATE item = VALUES(item), real_item = VALUES(real_item);")
 	end
@@ -433,6 +482,8 @@ function TransmogrificationHandler.UnequipTransmogItem(player, slot)
 end
 
 function TransmogrificationHandler.displayTransmog(player, spellid)
+	-- Load player transmogs before opening the frame
+	TransmogrificationHandler.LoadPlayer(player)
 	AIO.Handle(player, "TransmogrificationServer", "TransmogrificationFrame")
 	return false
 end
@@ -444,7 +495,7 @@ end
 function TransmogrificationHandler.SetTransmogItemIDs(player)
 	local playerGUID = player:GetGUIDLow()
 	
-	local transmogs = CharDBQuery('SELECT item, real_item, slot FROM character_transmog WHERE player_guid = '..playerGUID..';') -- AND slot NOT IN ("313", "315", "317")
+	local transmogs = CharDBQuery('SELECT item, real_item, slot FROM character_transmog WHERE player_guid = '..playerGUID..';')
 	if (transmogs == nil) then
 		return;
 	end
@@ -454,11 +505,27 @@ function TransmogrificationHandler.SetTransmogItemIDs(player)
 		local item = currentRow["item"]
 		local slot = currentRow["slot"]
 		local real_item = currentRow["real_item"]
-		local validSlotItem = player:GetUInt32Value(tonumber(slot))
-		if (validSlotItem == 0) then
-			CharDBQuery("INSERT INTO character_transmog (`player_guid`, `slot`, `item`, `real_item`) VALUES ("..playerGUID..", '"..slot.."', 0, "..real_item..") ON DUPLICATE KEY UPDATE item = VALUES(item), real_item = VALUES(real_item);")
+		
+		-- Применяем трансмогрификацию к персонажу на сервере
+		if item and item ~= 0 then
+			-- Обычный трансмог - применяем item
+			player:SetUInt32Value(tonumber(slot), item)
+		elseif item == 0 then
+			-- Скрытый слот - устанавливаем визуал в 0
+			player:SetUInt32Value(tonumber(slot), 0)
+		elseif real_item and real_item ~= 0 then
+			-- Если нет трансмога, но есть real_item - показываем оригинальный предмет
+			player:SetUInt32Value(tonumber(slot), real_item)
+		else
+			-- Если нет трансмогрификации, устанавливаем значение слота в 0
+			player:SetUInt32Value(tonumber(slot), 0)
 		end
-		if (not item or item == 0 and real_item ~= nil and real_item ~= 0 and (validSlotItem ~= 0 or not validSlotItem)) then
+		
+		-- Отправляем данные клиенту для синхронизации интерфейса
+		if item == 0 then
+			-- Скрытый слот - отправляем 0
+			AIO.Handle(player, "TransmogrificationServer", "SetTransmogItemIDClient", slot, 0, real_item)
+		elseif (not item or item == 0 and real_item ~= nil and real_item ~= 0) then
 			AIO.Handle(player, "TransmogrificationServer", "SetTransmogItemIDClient", slot, 0, real_item)
 		else
 			AIO.Handle(player, "TransmogrificationServer", "SetTransmogItemIDClient", slot, item, real_item)
@@ -471,6 +538,11 @@ function TransmogrificationHandler.SetCurrentSlotItemIDs(player, slot, page)
     local accountGUID = player:GetAccountId()
 
     -- Define inventory type mapping
+    -- This mapping ensures that weapons can only be transmogged to weapons of the same type:
+    -- - One-handed weapons (13, 17, 21) can only be transmogged to other one-handed weapons
+    -- - Two-handed weapons (13, 17, 22, 23, 14) can only be transmogged to other two-handed weapons  
+    -- - Ranged weapons (15, 25, 26) can only be transmogged to other ranged weapons
+    -- - But within each type, any weapon subtype (sword, axe, mace, etc.) can be used
     local inventoryTypesMapping = {
         [PLAYER_VISIBLE_ITEM_1_ENTRYID] = "= 1",
         [PLAYER_VISIBLE_ITEM_3_ENTRYID] = "= 3",
@@ -539,9 +611,10 @@ function TransmogrificationHandler.SetCurrentSlotItemIDs(player, slot, page)
 			else
 				queryConditions = queryConditions .. " AND inventory_subtype = " .. equippedItemSubType
 			end
-		elseif (RESTRICT_WEAPON_TRANSMOG_TO_SIMILAR_WEAPONS and equippedItemType == 2) then
-			queryConditions = queryConditions .. " AND inventory_subtype = " .. equippedItemSubType
 		end
+		-- Removed weapon subtype restrictions - now any weapon type can be transmogged to any other weapon type
+		-- as long as they have the same inventory_type (one-handed to one-handed, two-handed to two-handed, etc.)
+		-- Note: inventory_type restrictions are still enforced by the database query above
 	end
 
     -- Query to count matching transmogs
@@ -593,6 +666,11 @@ function TransmogrificationHandler.SetSearchCurrentSlotItemIDs(player, slot, pag
 	search = search:gsub("[%'`&\"]", "%%")
 
 	-- Define slot-to-inventory type mapping
+	-- This mapping ensures that weapons can only be transmogged to weapons of the same type:
+	-- - One-handed weapons (13, 17, 21) can only be transmogged to other one-handed weapons
+	-- - Two-handed weapons (13, 17, 22, 23, 14) can only be transmogged to other two-handed weapons  
+	-- - Ranged weapons (15, 25, 26) can only be transmogged to other ranged weapons
+	-- - But within each type, any weapon subtype (sword, axe, mace, etc.) can be used
 	local inventoryTypesMapping = {
 		[PLAYER_VISIBLE_ITEM_1_ENTRYID] = "= 1",
 		[PLAYER_VISIBLE_ITEM_3_ENTRYID] = "= 3",
@@ -796,6 +874,7 @@ end
 
 RegisterPlayerEvent(1, Transmog_OnCharacterCreate)
 RegisterPlayerEvent(2, Transmog_OnCharacterDelete)
+RegisterPlayerEvent(3, Transmog_OnLogin)
 
 RegisterPlayerEvent(29, Transmog_OnEquipItem)
 

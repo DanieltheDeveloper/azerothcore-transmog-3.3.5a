@@ -12,6 +12,7 @@ embeds.xml
 
 # Locale
 Locale\enUS.lua
+Locale\ruRU.lua
 
 # AddOn Functions
 transmogrification_options.lua
