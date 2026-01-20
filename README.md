@@ -6,9 +6,6 @@
 
 This project brings a fully functional Transmog system to AzerothCore servers, combining the power of [AIO](https://github.com/Rochet2/AIO) and [Eluna](https://github.com/azerothcore/mod-eluna).
 
-Want to support the development of this and other projects?  
-👉 Visit my [Patreon page](https://patreon.com/danielthedeveloper) — every bit helps!
-
 ## 📤 Installation (Server)
 
 1. Ensure you have both [AIO](https://github.com/Rochet2/AIO) and [mod-eluna](https://github.com/azerothcore/mod-eluna) installed on your AzerothCore server.
